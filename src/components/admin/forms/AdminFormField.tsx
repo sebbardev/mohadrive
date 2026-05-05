@@ -90,10 +90,12 @@ export function AdminTextInput({
   defaultValue,
   helperText,
   className = '',
+  onChange,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   placeholder?: string;
   defaultValue?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   ref?: React.Ref<HTMLInputElement>;
 }) {
   return (
@@ -128,10 +130,12 @@ export function AdminSelectInput({
   defaultValue,
   helperText,
   className = '',
+  onChange,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   options: { value: string; label: string }[];
   defaultValue?: string;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   ref?: React.Ref<HTMLSelectElement>;
 }) {
   return (
@@ -213,6 +217,7 @@ export function AdminNumberInput({
   step,
   helperText,
   className = '',
+  onChange,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   placeholder?: string;
@@ -220,6 +225,7 @@ export function AdminNumberInput({
   min?: number;
   max?: number;
   step?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   ref?: React.Ref<HTMLInputElement>;
 }) {
   return (
