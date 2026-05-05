@@ -269,12 +269,16 @@ export function AdminDateInput({
   label,
   required = false,
   defaultValue,
+  min,
+  max,
   helperText,
   className = '',
   onChange,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   defaultValue?: string;
+  min?: string;
+  max?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   ref?: React.Ref<HTMLInputElement>;
 }) {
@@ -294,6 +298,8 @@ export function AdminDateInput({
         name={name}
         required={required}
         defaultValue={defaultValue}
+        min={min}
+        max={max}
         onChange={onChange}
         className="w-full h-full p-0 bg-transparent border-none focus:ring-0 focus:outline-none [color-scheme:dark]"
         {...props}
