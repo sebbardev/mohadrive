@@ -88,16 +88,20 @@ export function AdminTextInput({
   required = false,
   placeholder,
   defaultValue,
+  value,
   maxLength,
   helperText,
   className = '',
   onChange,
+  onKeyPress,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   placeholder?: string;
   defaultValue?: string;
+  value?: string;
   maxLength?: number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   ref?: React.Ref<HTMLInputElement>;
 }) {
   return (
@@ -117,8 +121,10 @@ export function AdminTextInput({
         required={required}
         placeholder={placeholder}
         defaultValue={defaultValue}
+        value={value}
         maxLength={maxLength}
         onChange={onChange}
+        onKeyPress={onKeyPress}
         className="w-full h-full p-0 bg-transparent border-none focus:ring-0 focus:outline-none"
         {...props}
       />

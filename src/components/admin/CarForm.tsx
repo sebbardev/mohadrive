@@ -383,7 +383,7 @@ export default function CarForm({ initialData, isEditing = false, onSuccess, onC
                   label="Jour de Prélèvement"
                   defaultValue={formData.credit_payment_day}
                   options={[{ value: "1", label: "Le 01 du mois" }, { value: "5", label: "Le 05 du mois" }, { value: "10", label: "Le 10 du mois" }, { value: "15", label: "Le 15 du mois" }, { value: "20", label: "Le 20 du mois" }, { value: "25", label: "Le 25 du mois" }]}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData(prev => ({...prev, credit_payment_day: e.target.value}))}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData(prev => ({...prev, credit_payment_day: e.target.value}))}
                   inputClassName="admin-input border-orange-100 appearance-none cursor-pointer"
                 />
               </div>
