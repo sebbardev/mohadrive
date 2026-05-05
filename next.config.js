@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Force all pages to be dynamic (no static generation)
+  output: 'standalone',
+  distDir: 'dist',
+  trailingSlash: true,
+  
+  // Disable static generation for all pages
+  generateStaticParams: async () => [],
+  
   images: {
     remotePatterns: [
       {
