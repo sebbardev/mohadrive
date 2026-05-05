@@ -5,6 +5,8 @@ import { useSession } from "next-auth/react";
 import { format, formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+
 interface HeaderProps {
   session: any;
   onMenuClick?: () => void;
@@ -38,7 +40,7 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
   // Fetch pending returns
   const fetchPendingReturns = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/bookings?per_page=50&sort_by=created_at&sort_order=desc");
+      const res = await fetch(`${API_BASE_URL}/bookings?per_page=50&sort_by=created_at&sort_order=desc`);
       const data = await res.json();
       const all: any[] = data.data || [];
       const today = new Date(); today.setHours(0,0,0,0);
@@ -75,13 +77,13 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
 
     try {
       const [notificationsRes, unreadCountRes] = await Promise.all([
-        fetch("http://127.0.0.1:8000/api/notifications?per_page=3", {
+        fetch(`${API_BASE_URL}/notifications?per_page=3`, {
           headers: {
             "Accept": "application/json",
             "Authorization": `Bearer ${token}`,
           },
         }),
-        fetch("http://127.0.0.1:8000/api/notifications/unread-count", {
+        fetch(`${API_BASE_URL}/notifications/unread-count`, {
           headers: {
             "Accept": "application/json",
             "Authorization": `Bearer ${token}`,
@@ -142,7 +144,7 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/notifications/read-all", {
+      const response = await fetch(`${API_BASE_URL}/notifications/read-all`, {
         method: "PUT",
         headers: {
           "Accept": "application/json",

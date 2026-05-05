@@ -246,7 +246,8 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
 
   const fetchPendingReturns = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/bookings?per_page=100&sort_by=end_date&sort_order=asc");
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+      const res = await fetch(`${API_BASE_URL}/bookings?per_page=100&sort_by=end_date&sort_order=asc`);
       const data = await res.json();
       const all: any[] = data.data || [];
       const today = new Date(); today.setHours(0, 0, 0, 0);
@@ -1360,7 +1361,7 @@ function CreateBookingModal({
 
   const fetchCustomers = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/customers");
+      const response = await fetch(`${API_BASE_URL}/customers`);
       const data = await response.json();
       setCustomers(data.data || []);
     } catch (error) {

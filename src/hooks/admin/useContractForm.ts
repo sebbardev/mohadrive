@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "react-hot-toast";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+
 export const contractSchema = z.object({
   car_id: z.string().min(1, "Véhicule requis"),
   booking_id: z.string().optional().nullable(),
@@ -163,8 +165,8 @@ export function useContractForm({ initialData, onSuccess, prefillFromBookingId }
     try {
       const [carsRes, bookingsRes, customersRes] = await Promise.all([
         fetch("/api/admin/voitures"),
-        fetch("http://127.0.0.1:8000/api/bookings"),
-        fetch("http://127.0.0.1:8000/api/customers")
+        fetch(`${API_BASE_URL}/bookings`),
+        fetch(`${API_BASE_URL}/customers`)
       ]);
 
       const [carsData, bookingsData, customersData] = await Promise.all([

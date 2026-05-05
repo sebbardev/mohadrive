@@ -21,7 +21,8 @@ export default function PendingReturnsSection() {
 
   const fetchReturns = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/bookings?per_page=100&sort_by=end_date&sort_order=asc");
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+      const res = await fetch(`${API_URL}/bookings?per_page=100&sort_by=end_date&sort_order=asc`);
       const data = await res.json();
       const all: any[] = data.data || [];
       const today = new Date(); today.setHours(0, 0, 0, 0);

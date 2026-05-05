@@ -21,6 +21,8 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+
 interface SidebarProps {
   isOpen?: boolean;
   onClose?: () => void;
@@ -44,13 +46,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       try {
         const [msgRes, notifRes, bookingsRes, reviewsRes] = await Promise.all([
           fetch("/api/admin/contact-messages/unread-count"),
-          fetch("http://127.0.0.1:8000/api/notifications/unread-count", {
+          fetch(`${API_BASE_URL}/notifications/unread-count`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           }),
-          fetch("http://127.0.0.1:8000/api/bookings?status=PENDING&per_page=200", {
+          fetch(`${API_BASE_URL}/bookings?status=PENDING&per_page=200`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           }),
-          fetch("http://127.0.0.1:8000/api/reviews?status=pending&per_page=200", {
+          fetch(`${API_BASE_URL}/reviews?status=pending&per_page=200`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           }),
         ]);

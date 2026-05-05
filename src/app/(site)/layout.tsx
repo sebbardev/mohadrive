@@ -1,20 +1,12 @@
-"use client";
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import SiteClientLayout from "@/components/SiteClientLayout";
 
 export default function SiteLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <Navbar />
-      <main>
-        {children}
-      </main>
-      <Footer />
-    </>
-  );
+  return <SiteClientLayout>{children}</SiteClientLayout>;
 }
