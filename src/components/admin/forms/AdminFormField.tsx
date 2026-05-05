@@ -88,6 +88,7 @@ export function AdminTextInput({
   required = false,
   placeholder,
   defaultValue,
+  maxLength,
   helperText,
   className = '',
   onChange,
@@ -95,6 +96,7 @@ export function AdminTextInput({
 }: Omit<AdminFormFieldProps, 'children'> & {
   placeholder?: string;
   defaultValue?: string;
+  maxLength?: number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   ref?: React.Ref<HTMLInputElement>;
 }) {
@@ -115,6 +117,8 @@ export function AdminTextInput({
         required={required}
         placeholder={placeholder}
         defaultValue={defaultValue}
+        maxLength={maxLength}
+        onChange={onChange}
         className="w-full h-full p-0 bg-transparent border-none focus:ring-0 focus:outline-none"
         {...props}
       />
@@ -153,6 +157,7 @@ export function AdminSelectInput({
         name={name}
         required={required}
         defaultValue={defaultValue}
+        onChange={onChange}
         className="w-full h-full p-0 bg-transparent border-none focus:ring-0 focus:outline-none appearance-none"
         {...props}
       >
@@ -175,11 +180,13 @@ export function AdminTextareaInput({
   rows = 5,
   helperText,
   className = '',
+  onChange,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   placeholder?: string;
   defaultValue?: string;
   rows?: number;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   ref?: React.Ref<HTMLTextAreaElement>;
 }) {
   return (
@@ -199,6 +206,7 @@ export function AdminTextareaInput({
         rows={rows}
         placeholder={placeholder}
         defaultValue={defaultValue}
+        onChange={onChange}
         className="w-full h-full p-0 bg-transparent border-none focus:ring-0 focus:outline-none"
         {...props}
       />
@@ -248,6 +256,7 @@ export function AdminNumberInput({
         min={min}
         max={max}
         step={step}
+        onChange={onChange}
         className="w-full h-full p-0 bg-transparent border-none focus:ring-0 focus:outline-none"
         {...props}
       />
@@ -262,9 +271,11 @@ export function AdminDateInput({
   defaultValue,
   helperText,
   className = '',
+  onChange,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   defaultValue?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   ref?: React.Ref<HTMLInputElement>;
 }) {
   return (
@@ -283,6 +294,7 @@ export function AdminDateInput({
         name={name}
         required={required}
         defaultValue={defaultValue}
+        onChange={onChange}
         className="w-full h-full p-0 bg-transparent border-none focus:ring-0 focus:outline-none [color-scheme:dark]"
         {...props}
       />
