@@ -1,12 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Force all pages to be dynamic (no static generation)
-  output: 'standalone',
-  distDir: 'dist',
+  // Standard output for Hostinger deployment
   trailingSlash: true,
   
-  // Disable static generation for all pages
-  generateStaticParams: async () => [],
+  // Disable static generation - force dynamic rendering
+  staticPageGenerationTimeout: 120,
   
   images: {
     remotePatterns: [
