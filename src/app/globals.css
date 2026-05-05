@@ -1,0 +1,483 @@
+@import "tailwindcss";
+
+/**
+ * ADMIN PREMIUM DESIGN SYSTEM (v1.0)
+ * ---------------------------------
+ * 
+ * VARIABLES CSS (@theme):
+ * --color-primary: Or (#d4af37) - Couleur principale de la marque.
+ * --color-secondary: Bleu Ardoise (#3B556D) - Arrière-plan secondaire.
+ * --color-dark: Marine Profond (#1C2942) - Arrière-plan principal.
+ * --color-light: Blanc pur (#ffffff) - Texte et éléments clairs.
+ * 
+ * CLASSES UTILITAIRES (Layer: Components):
+ * 
+ * TITRES & TEXTES :
+ * .admin-header-title   : Titre principal (4xl, gras, italique, majuscules).
+ * .admin-header-subtitle: Sous-titre (xs, gras, majuscules, espacé).
+ * .admin-section-title  : Titre de section (xl, noir, majuscules, italique).
+ * .admin-label          : Libellé de champ (10px, noir, majuscules, espacé).
+ * 
+ * CONTENEURS :
+ * .admin-card           : Carte premium (bg-slate-800, arrondi 2rem, bordure, ombre).
+ * 
+ * TABLEAUX :
+ * .admin-table-header   : En-tête de tableau (bg-slate-900, bordure, texte 10px).
+ * .admin-table-row      : Ligne de tableau (hover effect, bordure subtile).
+ * 
+ * FORMULAIRES :
+ * .admin-input          : Champ de saisie (bg-slate-800, arrondi 1.5rem, focus gold).
+ * 
+ * BOUTONS :
+ * .admin-btn-primary    : Bouton principal (Gold, texte noir, ombre portée, hover scale).
+ * .admin-btn-icon       : Bouton icône (bg-slate-900, bordure, hover scale).
+ * 
+ * ANIMATIONS :
+ * .animate-fade-in-up   : Apparition progressive vers le haut.
+ * .animate-scale-up     : Zoom progressif à l'affichage.
+ */
+
+@theme {
+  --color-primary: #06668C; /* Navy Blue - Main Brand Color */
+  --color-secondary: #427AA1; /* Medium Blue - Accents */
+  --color-bg: #EBF2FA; /* Off-white - Main Background */
+  --color-accent: #679436; /* Forest Green - Buttons/CTA */
+  --color-highlight: #A4BD01; /* Lime Green - Highlights */
+  --color-text-main: #1C2942; /* Dark text for contrast */
+  --color-text-muted: #4a5568; /* Muted text */
+  --color-white: #ffffff;
+  
+  --animate-fade-in-up: fade-in-up 0.8s ease-out forwards;
+  --animate-fade-in: fade-in 0.6s ease-out forwards;
+
+  @keyframes scale-up {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scale-in {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes confetti {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0) scale(0);
+    }
+    50% {
+      opacity: 1;
+      transform: translate(var(--tx, 50px), var(--ty, -50px)) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--tx, 100px), var(--ty, -100px)) scale(0);
+    }
+  }
+
+  --animate-scale-up: scale-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-fade-in: fade-in 0.2s ease-out forwards;
+  --animate-scale-in: scale-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  --animate-confetti: confetti 1.5s ease-out forwards;
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--color-bg)] text-[var(--color-text-main)] font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight text-[var(--color-text-main)];
+  }
+
+  /* Smooth scrolling for all elements */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Optimize scrolling performance globally */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent layout shifts during loading */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Optimize paint performance */
+  .admin-card,
+  .card-premium,
+  .card-hover {
+    contain: layout style paint;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Admin smooth scrolling optimization */
+  .admin-scroll-container {
+    @apply overflow-y-auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) transparent;
+  }
+
+  /* Custom scrollbar styling for webkit browsers */
+  .admin-scroll-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .admin-scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .admin-scroll-container::-webkit-scrollbar-thumb {
+    background-color: rgba(6, 102, 140, 0.3);
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+  }
+
+  .admin-scroll-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(6, 102, 140, 0.5);
+  }
+
+  /* Hardware acceleration for smoother animations */
+  .admin-hardware-accel {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* Optimize transitions for better performance */
+  .transition-all {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Optimize table rendering */
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  /* Prevent content shift during page load */
+  .admin-card > * {
+    will-change: auto;
+  }
+  
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-primary {
+    @apply bg-[var(--color-accent)] text-white hover:bg-[#557a2d] active:scale-95 shadow-md hover:shadow-lg font-bold;
+  }
+  
+  .btn-secondary {
+    @apply bg-[var(--color-secondary)] text-white hover:bg-[#366485] active:scale-95 shadow-md;
+  }
+
+  .btn-outline {
+    @apply border-2 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white active:scale-95;
+  }
+
+  .card-premium {
+    @apply bg-white rounded-[2rem] border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  /* NEW TABLE DESIGN SYSTEM */
+  .admin-table-container {
+    @apply bg-white rounded-[25px] shadow-[0_10px_30px_rgba(0,0,0,0.05)] overflow-hidden border-none;
+  }
+
+  .admin-table-th {
+    @apply px-6 py-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[#9BA4B0] border-none;
+  }
+
+  .admin-table-td {
+    @apply px-6 py-4 align-middle border-none;
+  }
+
+  .admin-table-row {
+    @apply transition-colors duration-200 hover:bg-gray-50/50 border-none;
+  }
+
+  .admin-table-primary-text {
+    @apply text-[14px] font-bold text-[#1A3B5D];
+  }
+
+  .admin-table-secondary-text {
+    @apply text-[12px] text-[#9BA4B0];
+  }
+
+  .admin-table-icon-container {
+    @apply flex items-center justify-center w-10 h-10 rounded-full;
+  }
+
+  /* Status Pills */
+  .admin-pill {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider;
+  }
+
+  .admin-pill-success {
+    @apply bg-green-100 text-green-700;
+  }
+
+  .admin-pill-info {
+    @apply bg-blue-100 text-blue-700;
+  }
+
+  .admin-pill-warning {
+    @apply bg-orange-100 text-orange-700;
+  }
+
+  .admin-pill-error {
+    @apply bg-red-100 text-red-700;
+  }
+
+  /* KPI Price Style */
+  .admin-table-price {
+    @apply font-black text-lg tracking-tighter text-[var(--color-primary)];
+  }
+
+  .admin-table-unit {
+    @apply text-[10px] opacity-60 ml-1 font-bold uppercase;
+  }
+
+  /* Admin components adaptation for light theme */
+  .admin-card {
+    @apply bg-white rounded-[2rem] border border-gray-100 shadow-sm p-6 md:p-10 relative overflow-hidden transition-all duration-500;
+  }
+
+  .admin-card-hover {
+    @apply hover:shadow-xl hover:-translate-y-1 cursor-default;
+  }
+
+  .admin-header-title {
+    @apply text-3xl md:text-5xl font-black uppercase tracking-tighter text-[var(--color-primary)];
+  }
+
+  .admin-header-subtitle {
+    @apply text-[10px] md:text-[11px] font-bold uppercase tracking-[0.3em] text-gray-400;
+  }
+
+  .admin-section-title {
+    @apply text-xl md:text-2xl font-black uppercase tracking-tight text-[var(--color-primary)];
+  }
+
+  .admin-label {
+    @apply text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-gray-400;
+  }
+
+  .admin-input {
+    @apply w-full bg-white border border-gray-100 text-[var(--color-text-main)] rounded-2xl md:rounded-3xl px-6 py-4 md:py-5 outline-none focus:ring-2 focus:ring-[var(--color-secondary)]/20 focus:border-[var(--color-secondary)]/50 transition-all shadow-sm placeholder:text-gray-300 font-bold text-xs uppercase tracking-widest;
+  }
+
+  .admin-btn-primary {
+    @apply relative overflow-hidden inline-flex items-center justify-center bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-highlight)] hover:from-[var(--color-highlight)] hover:to-[var(--color-accent)] text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs gap-3 transition-all duration-500 hover:shadow-xl hover:shadow-[var(--color-accent)]/30 hover:-translate-y-1 active:scale-95 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Shine effect - same as Button component */
+  .admin-btn-primary::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full transition-transform duration-1000;
+  }
+
+  .admin-btn-primary:hover::before {
+    @apply translate-x-full;
+  }
+
+  /* Active state button - for filters, sorts, toggles */
+  .admin-btn-active {
+    @apply px-4 py-2 rounded-lg text-sm font-bold bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-highlight)] hover:from-[var(--color-highlight)] hover:to-[var(--color-accent)] text-white shadow-md transition-all;
+  }
+
+  /* Inactive state button - companion to admin-btn-active */
+  .admin-btn-inactive {
+    @apply px-4 py-2 rounded-lg text-sm font-bold bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all;
+  }
+
+  .admin-btn-secondary {
+    @apply bg-white border border-gray-100 text-gray-500 px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs flex items-center justify-center gap-3 transition-all hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/30 active:scale-95 shadow-sm;
+  }
+
+  .admin-btn-icon {
+    @apply p-3 bg-gray-50 border border-gray-100 text-[var(--color-primary)] rounded-xl md:rounded-2xl hover:bg-[var(--color-primary)] hover:text-white transition-all shadow-sm active:scale-95 flex items-center justify-center;
+  }
+
+  .admin-actions-container {
+    @apply flex items-center justify-end gap-3 opacity-0 translate-x-4 transition-all duration-500;
+  }
+
+  .group:hover .admin-actions-container {
+    @apply opacity-100 translate-x-0;
+  }
+
+  .admin-table-icon {
+    @apply w-10 h-10 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center text-[var(--color-primary)] transition-all duration-500 shadow-sm;
+  }
+
+  .group:hover .admin-table-icon {
+    @apply bg-[var(--color-primary)] text-white scale-110;
+  }
+
+  .admin-tag {
+    @apply flex items-center gap-2 text-[10px] font-black text-[var(--color-primary)] bg-[var(--color-bg)] border border-gray-50 px-4 py-2 rounded-xl w-fit tracking-widest shadow-inner transition-all duration-500;
+  }
+
+  .admin-badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-[9px] md:text-[10px] font-black uppercase tracking-wider border shadow-sm;
+  }
+
+  .admin-badge-success {
+    @apply bg-green-500/10 text-green-600 border-green-500/20;
+  }
+
+  .admin-badge-error {
+    @apply bg-red-500/10 text-red-600 border-red-500/20;
+  }
+
+  .admin-badge-warning {
+    @apply bg-orange-500/10 text-orange-600 border-orange-500/20;
+  }
+
+  .admin-badge-info {
+    @apply bg-blue-500/10 text-blue-600 border-blue-500/20;
+  }
+
+  .admin-icon-container {
+    @apply p-3 md:p-4 bg-[var(--color-bg)] rounded-[1.2rem] md:rounded-[1.5rem] border border-gray-50 text-[var(--color-primary)] transition-all duration-500 shadow-inner flex items-center justify-center;
+  }
+
+  .group:hover .admin-icon-container {
+    @apply bg-[var(--color-primary)] text-white;
+  }
+
+  .admin-icon-container-highlight {
+    @apply p-3 md:p-4 bg-white/10 rounded-[1.2rem] md:rounded-[1.5rem] border border-white/20 text-white transition-all duration-500 shadow-inner flex items-center justify-center;
+  }
+
+  .admin-avatar {
+    @apply w-12 h-12 md:w-14 md:h-14 rounded-[1.5rem] md:rounded-[2rem] bg-gray-50 border border-gray-100 flex items-center justify-center text-[var(--color-primary)] font-black text-sm md:text-base shadow-sm transition-all;
+  }
+
+  /* Public Site Standard Headers */
+  .page-header-container {
+    @apply text-center mb-24 max-w-4xl mx-auto;
+  }
+
+  .page-header-title {
+    @apply text-4xl md:text-6xl font-black text-[var(--color-primary)] mb-6 uppercase tracking-tighter;
+  }
+
+  .page-header-subtitle {
+    @apply text-xl text-[var(--color-text-muted)] font-light tracking-wide leading-relaxed;
+  }
+
+  .section-tag {
+    @apply text-xs font-black text-[var(--color-highlight)] uppercase tracking-[0.3em] mb-4 block;
+  }
+
+  /* Hide scrollbar for horizontal scrolling elements */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+
+  /* Enhanced animations for notifications */
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out forwards;
+  }
+
+  /* Line clamp utility for text truncation */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Enhanced hover effects */
+  .group:hover .group-hover\:scale-110 {
+    transform: scale(1.1);
+  }
+
+  .group:hover .group-hover\:opacity-100 {
+    opacity: 1;
+  }
+
+  .group:hover .group-hover\:text-gray-600 {
+    color: rgb(75 85 99);
+  }
+
+  .group:hover .group-hover\:text-gray-700 {
+    color: rgb(55 65 81);
+  }
+
+  .group:hover .group-hover\:text-\[var\(--color-secondary\)\] {
+    color: var(--color-secondary);
+  }
+}

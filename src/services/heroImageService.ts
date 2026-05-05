@@ -1,0 +1,24 @@
+import type { HeroImage } from "@/lib/api";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+
+/**
+ * Get active hero images for homepage
+ */
+export async function getHeroImages(): Promise<HeroImage[]> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/hero-images`, {
+      next: { revalidate: 60 }, // Cache for 60 seconds
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = await response.json();
+    return data.data || [];
+  } catch (error) {
+    console.error("Error fetching hero images:", error);
+    return [];
+  }
+}
