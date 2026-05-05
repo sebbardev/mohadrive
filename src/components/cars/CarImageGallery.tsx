@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import ImageLightbox from "./ImageLightbox";
+import ImageLightbox from "@/components/ImageLightbox";
 
 interface CarImageGalleryProps {
   images: string[];
@@ -59,13 +59,12 @@ export default function CarImageGallery({ images, mainImage, alt }: CarImageGall
       )}
 
       {/* Lightbox */}
-      {lightboxOpen && (
-        <ImageLightbox
-          images={images}
-          mainImage={mainImage}
-          alt={alt}
-        />
-      )}
+      <ImageLightbox
+        images={images}
+        initialIndex={lightboxIndex}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+      />
     </>
   );
 }
