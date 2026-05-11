@@ -71,7 +71,7 @@ const CONTACT_INFO = {
 };
 
 // Backend API URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://www.mohadrive.com";
 
 export default function ContactPage() {
   const { data: session } = useSession();
