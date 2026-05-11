@@ -8,7 +8,7 @@ export async function DELETE(
     const { id } = params;
 
     // Construire l'URL vers le backend Laravel
-    const backendUrl = `http://127.0.0.1:8000/api/notifications/${id}`;
+    const backendUrl = `https://mohadrive.com/api/notifications/${id}`;
 
     // Récupérer les headers de la requête originale
     const headers = new Headers();

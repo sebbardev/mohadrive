@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function PUT(request: NextRequest) {
   try {
     // Construire l'URL vers le backend Laravel
-    const backendUrl = `http://127.0.0.1:8000/api/notifications/read-all`;
+    const backendUrl = `https://mohadrive.com/api/notifications/read-all`;
 
     // Récupérer les headers de la requête originale
     const headers = new Headers();

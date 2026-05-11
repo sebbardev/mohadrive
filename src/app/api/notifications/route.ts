@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const filter = searchParams.get('filter') || 'ALL';
 
     // Construire l'URL vers le backend Laravel
-    const backendUrl = `http://127.0.0.1:8000/api/notifications?page=${page}&per_page=${per_page}&sort_by=${sort_by}&sort_order=${sort_order}&filter=${filter}`;
+    const backendUrl = `https://mohadrive.com/api/notifications?page=${page}&per_page=${per_page}&sort_by=${sort_by}&sort_order=${sort_order}&filter=${filter}`;
 
     // Récupérer les headers de la requête originale
     const headers = new Headers();

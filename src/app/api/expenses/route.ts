@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search');
 
     // Construire l'URL vers le backend Laravel avec pagination forcée à 15
-    const backendUrl = new URL('http://127.0.0.1:8000/api/expenses');
+    const backendUrl = new URL('https://mohadrive.com/api/expenses');
     backendUrl.searchParams.set('page', page);
     backendUrl.searchParams.set('per_page', per_page); // Forcer 15
     

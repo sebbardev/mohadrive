@@ -54,7 +54,7 @@ export default function DashboardClient() {
     const fetchExtra = async () => {
       setLoadingExtra(true);
       try {
-        const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+        const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
         const res = await fetch(`${API_BASE_URL}/bookings?per_page=50&sort_by=created_at&sort_order=desc`);
         const data = await res.json();
         const all: any[] = data.data || [];

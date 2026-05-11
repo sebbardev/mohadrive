@@ -19,7 +19,7 @@ export async function PATCH(
     const body = await req.json();
     const { status } = body;
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
     
     // On récupère d'abord les détails de la réservation pour l'email
     const bookingRes = await fetch(`${API_URL}/bookings/${params.id}`);

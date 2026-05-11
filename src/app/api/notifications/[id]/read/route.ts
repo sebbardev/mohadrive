@@ -8,7 +8,7 @@ export async function PUT(
     const { id } = params;
 
     // Construire l'URL vers le backend Laravel
-    const backendUrl = `http://127.0.0.1:8000/api/notifications/${id}/read`;
+    const backendUrl = `https://mohadrive.com/api/notifications/${id}/read`;
 
     // Récupérer les headers de la requête originale
     const headers = new Headers();

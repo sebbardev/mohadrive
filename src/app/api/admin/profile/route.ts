@@ -18,7 +18,7 @@ export async function PUT(req: Request) {
     const body = await req.json();
     const { name, email, currentPassword, newPassword, profileImage } = body;
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
     const response = await fetch(`${API_URL}/me`, {
       method: "PUT",
       headers: {
