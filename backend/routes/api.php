@@ -21,6 +21,28 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+// OPTIONS routes for CORS preflight
+Route::options('/login', function () { return response()->json([], 200); });
+Route::options('/register', function () { return response()->json([], 200); });
+Route::options('/forgot-password', function () { return response()->json([], 200); });
+Route::options('/reset-password', function () { return response()->json([], 200); });
+Route::options('/cars', function () { return response()->json([], 200); });
+Route::options('/cars/featured', function () { return response()->json([], 200); });
+Route::options('/cars/{car}', function () { return response()->json([], 200); });
+Route::options('/stats', function () { return response()->json([], 200); });
+Route::options('/stats/cars/{car}', function () { return response()->json([], 200); });
+Route::options('/unavailabilities', function () { return response()->json([], 200); });
+Route::options('/hero-images', function () { return response()->json([], 200); });
+Route::options('/reviews', function () { return response()->json([], 200); });
+Route::options('/bookings', function () { return response()->json([], 200); });
+Route::options('/bookings/{booking}', function () { return response()->json([], 200); });
+Route::options('/expenses', function () { return response()->json([], 200); });
+Route::options('/expenses/dashboard', function () { return response()->json([], 200); });
+Route::options('/contracts', function () { return response()->json([], 200); });
+Route::options('/contracts/{contract}', function () { return response()->json([], 200); });
+Route::options('/customers', function () { return response()->json([], 200); });
+Route::options('/contact', function () { return response()->json([], 200); });
+
 // Public routes
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
