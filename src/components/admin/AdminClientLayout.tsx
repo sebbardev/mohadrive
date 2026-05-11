@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "@/components/admin/Sidebar";
 import Header from "@/components/admin/Header";
 import { useSession } from "next-auth/react";
@@ -13,9 +13,22 @@ export default function AdminClientLayout({
 }) {
   const { data: session, status } = useSession();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  if (status === "loading") {
-    return null;
+  // Prevent hydration issues and improve initial render
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (status === "loading" || !isMounted) {
+    return (
+      <div className="flex h-screen bg-[var(--color-bg)] items-center justify-center">
+        <div className="animate-pulse text-center">
+          <div className="w-16 h-16 bg-gray-200 rounded-2xl mx-auto mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-32 mx-auto"></div>
+        </div>
+      </div>
+    );
   }
 
   if (!session || session.user.role !== "ADMIN") {

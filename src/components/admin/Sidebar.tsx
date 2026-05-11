@@ -43,8 +43,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   useEffect(() => {
     const fetchBadges = async () => {
       const token = (session?.user as any)?.accessToken;
+      if (!token) return;
+      
       try {
-        const [msgRes, notifRes, bookingsRes, reviewsRes] = await Promise.all([
+        // Use Promise.allSettled to avoid blocking if one request fails
+        const [msgRes, notifRes, bookingsRes, reviewsRes] = await Promise.allSettled([
           fetch("/api/admin/contact-messages/unread-count"),
           fetch(`${API_BASE_URL}/notifications/unread-count`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -57,25 +60,30 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           }),
         ]);
 
-        const [msgData, notifData, bookingsData, reviewsData] = await Promise.all([
-          msgRes.ok ? msgRes.json() : { count: 0 },
-          notifRes.ok ? notifRes.json() : { count: 0 },
-          bookingsRes.ok ? bookingsRes.json() : { data: [] },
-          reviewsRes.ok ? reviewsRes.json() : { data: [] },
+        const results = await Promise.all([
+          msgRes.status === 'fulfilled' && msgRes.value.ok ? msgRes.value.json() : { count: 0 },
+          notifRes.status === 'fulfilled' && notifRes.value.ok ? notifRes.value.json() : { count: 0 },
+          bookingsRes.status === 'fulfilled' && bookingsRes.value.ok ? bookingsRes.value.json() : { data: [] },
+          reviewsRes.status === 'fulfilled' && reviewsRes.value.ok ? reviewsRes.value.json() : { data: [] },
         ]);
 
         setBadges({
-          messages: msgData.count || msgData.unread_count || 0,
-          notifications: notifData.count || 0,
-          reservations: Array.isArray(bookingsData.data) ? bookingsData.data.length : 0,
-          reviews: Array.isArray(reviewsData.data) ? reviewsData.data.length : 0,
+          messages: results[0].count || results[0].unread_count || 0,
+          notifications: results[1].count || 0,
+          reservations: Array.isArray(results[2].data) ? results[2].data.length : 0,
+          reviews: Array.isArray(results[3].data) ? results[3].data.length : 0,
         });
       } catch (_) {}
     };
 
-    fetchBadges();
+    // Add a small delay to prevent blocking initial render
+    const timeoutId = setTimeout(fetchBadges, 150);
     const interval = setInterval(fetchBadges, 30000);
-    return () => clearInterval(interval);
+    
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(interval);
+    };
   }, [session]);
 
   const menuItems = [
@@ -98,12 +106,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Overlay mobile */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden animate-fade-in"
+          className="fixed inset-0 bg-black/20 z-40 lg:hidden transition-opacity duration-150"
           onClick={onClose}
         />
       )}
 
-      <aside className={`fixed lg:static inset-y-0 left-0 w-64 bg-white border-r border-gray-200 flex flex-col h-full shadow-sm z-50 transition-transform duration-300 transform ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
+      <aside className={`fixed lg:static inset-y-0 left-0 w-64 bg-white border-r border-gray-200 flex flex-col h-full shadow-sm z-50 transition-transform duration-200 ease-out transform ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
         <div className="p-8 flex items-center justify-between">
           <Link href="/" className="flex flex-col gap-1 group">
             <h2 className="text-2xl font-black text-[var(--color-primary)] uppercase tracking-tighter leading-none">

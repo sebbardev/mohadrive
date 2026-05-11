@@ -76,7 +76,8 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
     }
 
     try {
-      const [notificationsRes, unreadCountRes] = await Promise.all([
+      // Use Promise.allSettled to avoid blocking if one request fails
+      const [notificationsRes, unreadCountRes] = await Promise.allSettled([
         fetch(`${API_BASE_URL}/notifications?per_page=3`, {
           headers: {
             "Accept": "application/json",
@@ -91,8 +92,8 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
         }),
       ]);
 
-      if (notificationsRes.ok) {
-        const data = await notificationsRes.json();
+      if (notificationsRes.status === 'fulfilled' && notificationsRes.value.ok) {
+        const data = await notificationsRes.value.json();
         // Transform backend notifications to Header format
         const transformedNotifications: Notification[] = (data.data || []).map((notif: any) => ({
           id: notif.id.toString(),
@@ -108,8 +109,8 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
         setNotifications(transformedNotifications);
       }
 
-      if (unreadCountRes.ok) {
-        const data = await unreadCountRes.json();
+      if (unreadCountRes.status === 'fulfilled' && unreadCountRes.value.ok) {
+        const data = await unreadCountRes.value.json();
         setUnreadCount(data.count || 0);
       }
     } catch (error) {
@@ -120,10 +121,21 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
   };
 
   useEffect(() => {
-    fetchNotifications();
-    fetchPendingReturns();
-    const interval = setInterval(() => { fetchNotifications(); fetchPendingReturns(); }, 30000);
-    return () => clearInterval(interval);
+    // Add a small delay to prevent blocking initial render
+    const timeoutId = setTimeout(() => {
+      fetchNotifications();
+      fetchPendingReturns();
+    }, 100);
+    
+    const interval = setInterval(() => { 
+      fetchNotifications(); 
+      fetchPendingReturns(); 
+    }, 30000);
+    
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {
@@ -219,7 +231,7 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
 
           {/* Notifications Pop-up */}
           {showNotifications && (
-            <div className="absolute right-0 mt-4 w-80 md:w-96 bg-white rounded-[2.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] border border-gray-100 overflow-hidden animate-in fade-in zoom-in-95 duration-200 z-[60]">
+            <div className="absolute right-0 mt-4 w-80 md:w-96 bg-white rounded-[2.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] border border-gray-100 overflow-hidden z-[60] transition-all duration-150 ease-out">
               <div className="p-6 border-b border-gray-50 bg-gray-50/50 flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-black text-[var(--color-primary)] uppercase tracking-tight">Notifications</h3>
