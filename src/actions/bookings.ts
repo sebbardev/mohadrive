@@ -1,6 +1,6 @@
 "use server";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+const API_BASE_URL = "https://mohadrive.com/api";
 
 export async function createBooking(data: any) {
   try {

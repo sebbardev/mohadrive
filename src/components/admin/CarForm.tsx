@@ -147,7 +147,7 @@ export default function CarForm({ initialData, isEditing = false, onSuccess, onC
         return;
       }
 
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+      const API_URL = "https://mohadrive.com/api";
       const method = isEditing ? "PUT" : "POST";
       const url = isEditing ? `${API_URL}/cars/${initialData.id}` : `${API_URL}/cars`;
 

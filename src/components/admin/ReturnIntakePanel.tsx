@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { CheckCircle2, ClipboardList, Plus, X } from "lucide-react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+const API_URL = "https://mohadrive.com/api";
 
 type PendingReturn = {
   id: string;

@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { format, formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+const API_BASE_URL = "https://mohadrive.com/api";
 
 interface HeaderProps {
   session: any;

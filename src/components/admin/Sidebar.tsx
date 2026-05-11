@@ -21,7 +21,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useState, useEffect, useCallback, memo } from "react";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+const API_BASE_URL = "https://mohadrive.com/api";
 
 interface SidebarProps {
   isOpen?: boolean;

@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+    const API_URL = "https://mohadrive.com/api";
     const response = await fetch(`${API_URL}/cars`, {
       method: "POST",
       headers: {
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+    const API_URL = "https://mohadrive.com/api";
     const response = await fetch(`${API_URL}/cars`, { cache: "no-store" });
     const data = await response.json().catch(() => null);
     return NextResponse.json(data, { status: response.status });

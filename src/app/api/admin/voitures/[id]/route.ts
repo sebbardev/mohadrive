@@ -19,7 +19,7 @@ export async function DELETE(
     }
 
     const id = params.id;
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+    const API_URL = "https://mohadrive.com/api";
     
     const response = await fetch(`${API_URL}/cars/${id}`, {
       method: "DELETE",

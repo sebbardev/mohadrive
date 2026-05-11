@@ -32,7 +32,7 @@ export interface Car {
   vignette_expiry_date?: string;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+const API_URL = "https://mohadrive.com/api";
 
 // Cache for API responses to reduce unnecessary calls
 const cache = new Map<string, { data: any; timestamp: number }>();

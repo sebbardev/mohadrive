@@ -1,6 +1,6 @@
 import type { HeroImage } from "@/lib/api";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+const API_BASE_URL = "https://mohadrive.com/api";
 
 /**
  * Get active hero images for homepage

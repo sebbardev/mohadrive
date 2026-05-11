@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+const API_URL = "https://mohadrive.com/api";
 
 export interface Booking {
   id: string;

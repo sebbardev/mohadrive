@@ -6,7 +6,7 @@ import { Image, Upload, Trash2, Edit2, GripVertical, X, Check, Plus } from "luci
 import { toast } from "react-hot-toast";
 import type { HeroImage } from "@/lib/api";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+const API_BASE_URL = "https://mohadrive.com/api";
 
 export default function HeroImageManager() {
   const { data: session } = useSession();
