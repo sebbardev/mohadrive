@@ -190,10 +190,13 @@ export default function Navbar() {
                 <a 
                   key={index}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="group bg-white p-3 rounded-xl text-[var(--color-primary)] hover:bg-gradient-to-br hover:from-[var(--color-primary)] hover:to-[var(--color-secondary)] hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg shadow-sm border border-gray-100"
+                  className="group bg-white p-3 rounded-xl text-[var(--color-primary)] hover:bg-gradient-to-br hover:from-[var(--color-primary)] hover:to-[var(--color-secondary)] hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg shadow-sm border border-gray-100 cursor-pointer touch-manipulation"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
-                  <social.icon size={18} className="transition-transform group-hover:scale-110" />
+                  <social.icon size={18} className="transition-transform group-hover:scale-110 pointer-events-none" />
                 </a>
               ))}
               <a 
