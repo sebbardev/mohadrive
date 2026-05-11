@@ -9,23 +9,14 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "https://votre-domaine-hostinger.com/api/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "/$1"
     }
   ],
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://votre-domaine-hostinger.com/api",
+    "NEXT_PUBLIC_API_URL": "https://mohadrive.com/api",
     "NEXT_PUBLIC_APP_NAME": "MOHADRIVE",
-    "NEXT_PUBLIC_APP_URL": "https://votre-domaine-vercel.vercel.app"
-  },
-  "functions": {
-    "app/api/**/*.ts": {
-      "maxDuration": 30
-    }
+    "NEXT_PUBLIC_APP_URL": "https://mohadrive.vercel.app"
   },
   "headers": [
     {
