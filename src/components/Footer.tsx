@@ -39,7 +39,7 @@ export default function Footer() {
             {/* Social Links */}
             <div className="flex gap-3">
               {[
-                { icon: Facebook, href: "https://www.facebook.com/people/Moha-Drive/pfbid0Fpb4zHN6WQ1ptmoebYbEzHnx5eoXjtKHS1NLjYSeqaRmhKginipeaR6gXBSA164cl/?mibextid=wwXIfr&ref=1", label: "Facebook" },
+                { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61586467745874&mibextid=wwXIfr", label: "Facebook" },
                 { icon: Instagram, href: "https://www.instagram.com/moha.drive?igsh=MW81cWtudWo3aGt5Zg==", label: "Instagram" },
               ].map((social, index) => (
                 <a 
@@ -54,7 +54,7 @@ export default function Footer() {
                 </a>
               ))}
               <a 
-                href="https://wa.me/212600000000"
+                href="https://wa.me/212676349036"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"

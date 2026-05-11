@@ -107,7 +107,7 @@ export default function Navbar() {
             
             {/* WhatsApp CTA Button */}
             <a
-              href="https://wa.me/212600000000"
+              href="https://wa.me/212676349036"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative ml-4 bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-highlight)] hover:from-[var(--color-highlight)] hover:to-[var(--color-accent)] text-white px-7 py-3.5 rounded-2xl flex items-center gap-2.5 text-xs font-black uppercase tracking-widest transition-all duration-500 hover:shadow-xl hover:shadow-[var(--color-accent)]/30 hover:-translate-y-1 active:scale-95 overflow-hidden"
@@ -184,8 +184,8 @@ export default function Navbar() {
             {/* Social Links */}
             <div className="flex items-center justify-center gap-3">
               {[
-                { icon: Facebook, href: "#", label: "Facebook" },
-                { icon: Instagram, href: "#", label: "Instagram" },
+                { icon: Facebook, href: "https://www.facebook.com/profile.php?id=61586467745874&mibextid=wwXIfr", label: "Facebook" },
+                { icon: Instagram, href: "https://www.instagram.com/moha.drive?igsh=MW81cWtudWo3aGt5Zg==", label: "Instagram" },
               ].map((social, index) => (
                 <a 
                   key={index}
@@ -197,7 +197,7 @@ export default function Navbar() {
                 </a>
               ))}
               <a 
-                href="https://wa.me/212600000000"
+                href="https://wa.me/212676349036"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
@@ -211,7 +211,7 @@ export default function Navbar() {
 
             {/* WhatsApp CTA Button */}
             <a
-              href="https://wa.me/212600000000"
+              href="https://wa.me/212676349036"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-highlight)] hover:from-[var(--color-highlight)] hover:to-[var(--color-accent)] text-white px-6 py-4 rounded-2xl flex items-center justify-center gap-3 text-sm font-black uppercase tracking-widest shadow-xl overflow-hidden transition-all hover:shadow-2xl active:scale-95"
