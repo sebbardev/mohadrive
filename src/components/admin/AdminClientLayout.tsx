@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Sidebar from "@/components/admin/Sidebar";
 import Header from "@/components/admin/Header";
 import { useSession } from "next-auth/react";
@@ -14,6 +14,15 @@ export default function AdminClientLayout({
   const { data: session, status } = useSession();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  
+  // Memoize the callback to avoid re-renders
+  const handleMenuClick = useCallback(() => {
+    setIsSidebarOpen(true);
+  }, []);
+  
+  const handleSidebarClose = useCallback(() => {
+    setIsSidebarOpen(false);
+  }, []);
 
   // Prevent hydration issues and improve initial render
   useEffect(() => {
@@ -37,9 +46,9 @@ export default function AdminClientLayout({
 
   return (
     <div className="flex h-screen bg-[var(--color-bg)] text-[var(--color-text-main)] overflow-hidden">
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <Sidebar isOpen={isSidebarOpen} onClose={handleSidebarClose} />
       <div className="flex-1 flex flex-col min-w-0">
-        <Header session={session} onMenuClick={() => setIsSidebarOpen(true)} />
+        <Header session={session} onMenuClick={handleMenuClick} />
         <main className="flex-1 admin-scroll-container p-4 md:p-8">
           {children}
         </main>

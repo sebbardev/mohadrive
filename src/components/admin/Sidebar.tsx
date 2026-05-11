@@ -19,7 +19,7 @@ import {
   LayoutDashboard
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
@@ -35,13 +35,12 @@ interface Badges {
   reviews: number;
 }
 
-export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [badges, setBadges] = useState<Badges>({ reservations: 0, messages: 0, notifications: 0, reviews: 0 });
 
-  useEffect(() => {
-    const fetchBadges = async () => {
+  const fetchBadges = useCallback(async () => {
       const token = (session?.user as any)?.accessToken;
       if (!token) return;
       
@@ -74,8 +73,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           reviews: Array.isArray(results[3].data) ? results[3].data.length : 0,
         });
       } catch (_) {}
-    };
+  }, [session]);
 
+  useEffect(() => {
     // Add a small delay to prevent blocking initial render
     const timeoutId = setTimeout(fetchBadges, 150);
     const interval = setInterval(fetchBadges, 30000);
@@ -84,7 +84,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       clearTimeout(timeoutId);
       clearInterval(interval);
     };
-  }, [session]);
+  }, [fetchBadges]);
 
   const menuItems = [
     { icon: LayoutDashboard, label: "Tableau de bord", href: "/admin/dashboard", badge: 0 },
@@ -121,7 +121,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </Link>
           <button 
             onClick={onClose}
-            className="lg:hidden p-2 text-gray-400 hover:text-[var(--color-primary)]"
+            className="lg:hidden p-2 text-gray-400 hover:text-[var(--color-primary)] active:scale-95 transition-transform duration-150 touch-manipulation"
+            style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             <X size={20} />
           </button>
@@ -135,11 +136,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className={`flex items-center justify-between px-4 py-4 rounded-2xl transition-all group ${
+                className={`flex items-center justify-between px-4 py-4 rounded-2xl transition-all duration-150 group touch-manipulation ${
                   isActive 
                     ? "admin-btn-active shadow-lg shadow-blue-900/10 -translate-x-1" 
-                    : "text-gray-400 hover:bg-gray-50 hover:text-[var(--color-primary)]"
+                    : "text-gray-400 hover:bg-gray-50 hover:text-[var(--color-primary)] active:scale-[0.98]"
                 }`}
+                style={{ WebkitTapHighlightColor: 'transparent' }}
               >
                 <div className="flex items-center gap-4">
                   <item.icon size={18} className={isActive ? "text-white" : "group-hover:text-[var(--color-primary)]"} />
@@ -173,3 +175,5 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     </>
   );
 }
+
+export default memo(Sidebar);

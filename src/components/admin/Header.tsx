@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, memo } from "react";
 import { Bell, Search, User, Menu, X, Calendar, AlertCircle, CheckCircle2, ChevronRight, Star, CreditCard, TrendingUp, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -22,7 +22,7 @@ interface Notification {
   link?: string;
 }
 
-export default function Header({ session, onMenuClick }: HeaderProps) {
+function Header({ session, onMenuClick }: HeaderProps) {
   const { data: sessionData } = useSession();
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -32,13 +32,13 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
 
   const notificationRef = useRef<HTMLDivElement>(null);
 
-  // Get auth token from session
-  const getToken = () => {
+  // Get auth token from session - memoized
+  const getToken = useCallback(() => {
     return (sessionData?.user as any)?.accessToken || (session?.user as any)?.accessToken;
-  };
+  }, [sessionData?.user, session?.user]);
 
-  // Fetch pending returns
-  const fetchPendingReturns = async () => {
+  // Fetch pending returns - memoized
+  const fetchPendingReturns = useCallback(async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/bookings?per_page=50&sort_by=created_at&sort_order=desc`);
       const data = await res.json();
@@ -65,10 +65,10 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
         };
       }));
     } catch {}
-  };
+  }, []);
 
-  // Fetch notifications and unread count from API
-  const fetchNotifications = async () => {
+  // Fetch notifications and unread count from API - memoized
+  const fetchNotifications = useCallback(async () => {
     const token = getToken();
     if (!token) {
       console.warn("No auth token available");
@@ -118,7 +118,7 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getToken]);
 
   useEffect(() => {
     // Add a small delay to prevent blocking initial render
@@ -136,7 +136,7 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
       clearTimeout(timeoutId);
       clearInterval(interval);
     };
-  }, []);
+  }, [fetchNotifications, fetchPendingReturns]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -148,7 +148,7 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const markAllAsRead = async () => {
+  const markAllAsRead = useCallback(async () => {
     const token = getToken();
     if (!token) {
       console.warn("No auth token available");
@@ -171,9 +171,9 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
     } catch (error) {
       console.error("Error marking all as read:", error);
     }
-  };
+  }, [getToken, fetchNotifications]);
 
-  const getIcon = (type: string) => {
+  const getIcon = useCallback((type: string) => {
     switch (type) {
       case "BOOKING": return <Calendar className="text-blue-500" size={16} />;
       case "CONTRACT": return <CheckCircle2 className="text-green-500" size={16} />;
@@ -182,14 +182,15 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
       case "RETURN": return <RotateCcw className="text-purple-500" size={16} />;
       default: return <Bell className="text-gray-400" size={16} />;
     }
-  };
+  }, []);
 
   return (
-    <header className="h-24 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-10 shadow-sm z-50 sticky top-0">
+    <header className="h-24 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-10 shadow-sm z-50 sticky top-0 will-change-transform">
       <div className="flex items-center gap-4">
         <button 
           onClick={onMenuClick}
-          className="lg:hidden p-3 bg-gray-50 rounded-2xl text-[var(--color-primary)] hover:bg-gray-100 transition-all shadow-sm"
+          className="lg:hidden p-3 bg-gray-50 rounded-2xl text-[var(--color-primary)] hover:bg-gray-100 active:scale-95 transition-all duration-150 shadow-sm touch-manipulation"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           <Menu size={20} />
         </button>
@@ -217,9 +218,10 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
         <div className="relative" ref={notificationRef}>
           <button 
             onClick={() => setShowNotifications(!showNotifications)}
-            className={`relative p-3 rounded-2xl transition-all shadow-sm group ${
+            className={`relative p-3 rounded-2xl transition-all duration-150 shadow-sm group active:scale-95 ${
               showNotifications ? "admin-btn-active" : "bg-gray-50 text-gray-400 hover:text-[var(--color-primary)] hover:bg-gray-100"
             }`}
+            style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             <Bell size={18} />
             {(unreadCount + returnNotifs.length) > 0 && (
@@ -328,3 +330,5 @@ export default function Header({ session, onMenuClick }: HeaderProps) {
     </header>
   );
 }
+
+export default memo(Header);
