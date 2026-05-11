@@ -27,10 +27,10 @@
 
 # Headers CORS pour Hostinger
 <IfModule mod_headers.c>
-    Header always set Access-Control-Allow-Origin "https://votre-domaine-vercel.vercel.app"
+    Header always set Access-Control-Allow-Origin "https://www.mohadrive.com"
     Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
     Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, X-XSRF-Token"
-    Header always set Access-Control-Allow-Credentials "true"
+    Header always set Access-Control-Allow-Credentials "false"
     
     # Headers de sécurité
     Header always set X-Frame-Options "SAMEORIGIN"
