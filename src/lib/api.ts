@@ -1,3 +1,5 @@
+import { cache } from 'react';
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 export interface Car {
@@ -36,13 +38,13 @@ export interface HeroImage {
   is_active?: boolean;
 }
 
-export async function getAllCars(): Promise<Car[]> {
+export const getAllCars = cache(async (): Promise<Car[]> => {
   try {
     const response = await fetch(`${API_BASE_URL}/cars`, {
-      next: { revalidate: 300 }, // Revalidate every 5 minutes
       headers: {
         'Content-Type': 'application/json',
       },
+      // Next.js will automatically cache this fetch request
     });
 
     if (!response.ok) {
@@ -56,15 +58,15 @@ export async function getAllCars(): Promise<Car[]> {
     console.error("Error fetching cars:", error);
     return [];
   }
-}
+});
 
-export async function getHeroImages(): Promise<HeroImage[]> {
+export const getHeroImages = cache(async (): Promise<HeroImage[]> => {
   try {
     const response = await fetch(`${API_BASE_URL}/hero-images`, {
-      next: { revalidate: 3600 }, // Revalidate every hour
       headers: {
         'Content-Type': 'application/json',
       },
+      // Next.js will automatically cache this fetch request
     });
 
     if (!response.ok) {
@@ -78,15 +80,15 @@ export async function getHeroImages(): Promise<HeroImage[]> {
     console.error("Error fetching hero images:", error);
     return [];
   }
-}
+});
 
-export async function getReviews(): Promise<Review[]> {
+export const getReviews = cache(async (): Promise<Review[]> => {
   try {
     const response = await fetch(`${API_BASE_URL}/reviews`, {
-      next: { revalidate: 3600 }, // Revalidate every hour
       headers: {
         'Content-Type': 'application/json',
       },
+      // Next.js will automatically cache this fetch request
     });
 
     if (!response.ok) {
@@ -111,15 +113,15 @@ export async function getReviews(): Promise<Review[]> {
     console.error("Error fetching reviews:", error);
     return [];
   }
-}
+});
 
-export async function getTotalBookings(): Promise<number> {
+export const getTotalBookings = cache(async (): Promise<number> => {
   try {
     const response = await fetch(`${API_BASE_URL}/bookings`, {
-      next: { revalidate: 300 }, // Revalidate every 5 minutes
       headers: {
         'Content-Type': 'application/json',
       },
+      // Next.js will automatically cache this fetch request
     });
 
     if (!response.ok) {
@@ -133,4 +135,4 @@ export async function getTotalBookings(): Promise<number> {
     console.error("Error fetching bookings:", error);
     return 0;
   }
-}
+});
