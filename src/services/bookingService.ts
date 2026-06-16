@@ -1,4 +1,4 @@
-const API_URL = "https://mohadrive.com/api";
+﻿const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 export interface Booking {
   id: string;
@@ -77,7 +77,7 @@ export async function getAllBookings(
     });
     
     const response = await fetch(`${API_URL}/bookings?${params.toString()}`, {
-      next: { revalidate: 0 }, // Pas de cache pour les réservations
+      next: { revalidate: 0 }, // Pas de cache pour les rÃ©servations
     });
 
     if (!response.ok) {
@@ -99,7 +99,7 @@ export async function getAllBookings(
       sort_order: sortOrder,
     };
   } catch (error) {
-    console.error("Erreur lors de la récupération des réservations via Laravel API:", error);
+    console.error("Erreur lors de la rÃ©cupÃ©ration des rÃ©servations via Laravel API:", error);
     return {
       data: [],
       current_page: page,
@@ -134,7 +134,7 @@ export async function getBookingsByRange(params: {
     const { data } = await response.json();
     return data.map(mapLaravelBookingToFrontend);
   } catch (error) {
-    console.error("Erreur lors de la récupération des réservations (range):", error);
+    console.error("Erreur lors de la rÃ©cupÃ©ration des rÃ©servations (range):", error);
     return [];
   }
 }
@@ -146,19 +146,19 @@ export async function updateBookingStatus(id: string, status: string, adminId?: 
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
         status,
-        admin_id: adminId, // Pour la journalisation côté backend
+        admin_id: adminId, // Pour la journalisation cÃ´tÃ© backend
         updated_at: new Date().toISOString()
       }),
     });
 
     if (response.ok) {
       // Simulation d'envoi d'email et journalisation
-      console.log(`[LOG] Réservation ${id} mise à jour vers ${status} par l'admin ${adminId || 'système'}`);
+      console.log(`[LOG] RÃ©servation ${id} mise Ã  jour vers ${status} par l'admin ${adminId || 'systÃ¨me'}`);
       return true;
     }
     return false;
   } catch (error) {
-    console.error("Erreur lors de la mise à jour du statut:", error);
+    console.error("Erreur lors de la mise Ã  jour du statut:", error);
     return false;
   }
 }
@@ -176,14 +176,14 @@ export async function createBooking(bookingData: any): Promise<Booking | null> {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || "Erreur lors de la création de la réservation");
+      throw new Error(errorData.message || "Erreur lors de la crÃ©ation de la rÃ©servation");
     }
 
     const result = await response.json();
     const data = result.data || result;
     return mapLaravelBookingToFrontend(data);
   } catch (error) {
-    console.error("Erreur lors de la création de la réservation:", error);
+    console.error("Erreur lors de la crÃ©ation de la rÃ©servation:", error);
     throw error;
   }
 }
@@ -229,12 +229,12 @@ export async function createBookingAdmin(params: {
     const data = await response.json().catch(() => null);
 
     if (!response.ok) {
-      return { success: false, error: data?.message || "Erreur lors de la création" };
+      return { success: false, error: data?.message || "Erreur lors de la crÃ©ation" };
     }
 
     const bookingData = data?.data ?? data;
     return { success: true, booking: mapLaravelBookingToFrontend(bookingData) };
   } catch (error) {
-    return { success: false, error: "Erreur réseau" };
+    return { success: false, error: "Erreur rÃ©seau" };
   }
 }

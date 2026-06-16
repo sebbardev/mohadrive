@@ -1,4 +1,4 @@
-const API_URL = "https://mohadrive.com/api";
+﻿const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 export interface CarProfitDetail {
   id: string;
@@ -97,7 +97,7 @@ export async function getStats(): Promise<Stats> {
 
     return await response.json();
   } catch (error) {
-    console.error("Erreur lors de la récupération des statistiques via Laravel API:", error);
+    console.error("Erreur lors de la rÃ©cupÃ©ration des statistiques via Laravel API:", error);
     return {
       totalCars: 0,
       activeBookings: 0,
@@ -131,7 +131,7 @@ export async function getPublicStats(): Promise<{ totalBookings: number; availab
 
     return await response.json();
   } catch (error) {
-    console.error("Erreur lors de la récupération des statistiques publiques:", error);
+    console.error("Erreur lors de la rÃ©cupÃ©ration des statistiques publiques:", error);
     return {
       totalBookings: 0,
       availableCars: 0,
@@ -151,7 +151,7 @@ export async function getCarDetailedStats(id: string): Promise<CarDetailedStats 
 
     return await response.json();
   } catch (error) {
-    console.error(`Erreur lors de la récupération des statistiques pour la voiture ${id}:`, error);
+    console.error(`Erreur lors de la rÃ©cupÃ©ration des statistiques pour la voiture ${id}:`, error);
     return null;
   }
 }

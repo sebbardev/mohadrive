@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
-const API_URL = "https://mohadrive.com/api";
+const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 export async function GET(request: NextRequest) {
   try {
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     
     if (!session?.user || (session.user as any).role !== "ADMIN") {
       console.warn('Unauthorized access attempt to reviews');
-      return NextResponse.json({ message: "Non autorisé" }, { status: 403 });
+      return NextResponse.json({ message: "Non autorisÃ©" }, { status: 403 });
     }
 
     const { searchParams } = new URL(request.url);

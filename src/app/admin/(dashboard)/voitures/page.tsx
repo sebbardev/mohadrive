@@ -148,10 +148,12 @@ export default function AdminCarsPage() {
                       <div className="flex items-center gap-5">
                         <div className="relative h-16 w-28 rounded-2xl overflow-hidden border-4 border-white shadow-md group-hover:shadow-xl transition-all group-hover:-translate-y-1 duration-500">
                           <Image
-                            src={car.image}
+                            src={car.image || "/placeholder-car.png"}
                             alt={car.brand}
                             fill
                             className="object-cover"
+                            onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder-car.png"; }}
+                            unoptimized={!car.image?.startsWith("https://")}
                           />
                         </div>
                         <div className="flex flex-col">

@@ -1,7 +1,7 @@
-import { getAllCars, Car } from "./carService";
+﻿import { getAllCars, Car } from "./carService";
 import { getAllBookings, Booking } from "./bookingService";
 
-const API_URL = "https://mohadrive.com/api";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 export interface Expense {
   id: string;
@@ -65,7 +65,7 @@ export async function getExpenses(params?: {
   search?: string;
 }) {
   try {
-    // Utiliser l'API locale Next.js qui gère correctement la pagination
+    // Utiliser l'API locale Next.js qui gÃ¨re correctement la pagination
     const url = new URL('/api/expenses', window.location.origin);
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
@@ -92,11 +92,11 @@ export async function createExpense(data: any, accessToken: string) {
     });
     const result = await response.json();
     if (!response.ok) {
-      return { success: false, error: result.message || "Erreur lors de la création" };
+      return { success: false, error: result.message || "Erreur lors de la crÃ©ation" };
     }
     return { success: true, data: result };
   } catch (error: any) {
-    return { success: false, error: "Erreur lors de la création" };
+    return { success: false, error: "Erreur lors de la crÃ©ation" };
   }
 }
 
@@ -112,11 +112,11 @@ export async function updateExpense(id: string, data: any, accessToken: string) 
     });
     const result = await response.json();
     if (!response.ok) {
-      return { success: false, error: result.message || "Erreur lors de la mise à jour" };
+      return { success: false, error: result.message || "Erreur lors de la mise Ã  jour" };
     }
     return { success: true, data: result };
   } catch (error: any) {
-    return { success: false, error: "Erreur lors de la mise à jour" };
+    return { success: false, error: "Erreur lors de la mise Ã  jour" };
   }
 }
 
@@ -144,7 +144,7 @@ export async function getExpenseDashboard(params?: {
   to?: string;
 }): Promise<ExpenseDashboard | null> {
   try {
-    // Utiliser l'API backend qui fait déjà correctement les calculs
+    // Utiliser l'API backend qui fait dÃ©jÃ  correctement les calculs
     const url = new URL(`${API_URL}/expenses/dashboard`);
     if (params?.car_id) {
       url.searchParams.append('car_id', params.car_id);
@@ -165,7 +165,7 @@ export async function getExpenseDashboard(params?: {
     const response = await fetch(url.toString());
     const backendData = await response.json();
 
-    // Transformer les données du backend vers le format frontend
+    // Transformer les donnÃ©es du backend vers le format frontend
     return {
       summary: {
         total_revenue: backendData.summary.total_revenue,
@@ -190,7 +190,7 @@ export async function getExpenseDashboard(params?: {
   } catch (error) {
     console.error("Error fetching expense dashboard from API:", error);
     
-    // Fallback: calcul côté client si l'API échoue
+    // Fallback: calcul cÃ´tÃ© client si l'API Ã©choue
     try {
       const [cars, bookings, expenses] = await Promise.all([
         getAllCars(),
@@ -202,7 +202,7 @@ export async function getExpenseDashboard(params?: {
       let startDate: Date;
       let endDate = now;
 
-      // Déterminer la période de calcul
+      // DÃ©terminer la pÃ©riode de calcul
       if (params?.from && params?.to) {
         startDate = new Date(params.from);
         endDate = new Date(params.to);
@@ -225,7 +225,7 @@ export async function getExpenseDashboard(params?: {
         }
       }
 
-      // Calculer les statistiques par véhicule
+      // Calculer les statistiques par vÃ©hicule
       const perCarStats = cars.map(car => {
         const carBookings = bookings.data.filter((b: any) => {
           const bookingDate = new Date(b.startDate);
@@ -249,7 +249,7 @@ export async function getExpenseDashboard(params?: {
         const automaticExpenses = carExpenses.filter((e: any) => e.is_automatic);
         
         const creditAmount = automaticExpenses
-          .filter((e: any) => e.type === 'crédit')
+          .filter((e: any) => e.type === 'crÃ©dit')
           .reduce((sum: number, e: any) => sum + e.amount, 0);
         
         const maintenanceAmount = manualExpenses.reduce((sum: number, e: any) => sum + e.amount, 0) +

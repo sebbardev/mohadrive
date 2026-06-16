@@ -1,24 +1,21 @@
-import { getAllBookings } from "@/services/bookingService";
-import AdminReservationsClient from "./AdminReservationsClient";
+﻿"use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Lock } from "lucide-react";
 
-export default async function AdminReservationsPage({
-  searchParams,
-}: {
-  searchParams: { page?: string; sort_by?: string; sort_order?: string; new?: string };
-}) {
-  const page = parseInt(searchParams.page || "1");
-  const sortBy = searchParams.sort_by || "created_at";
-  const sortOrder = searchParams.sort_order || "desc";
-  const openNewForm = searchParams.new === "true";
-  const initialBookings = await getAllBookings(page, 15, sortBy, sortOrder);
-
+export default function ReservationsPage() {
+  const router = useRouter();
+  useEffect(() => { const t = setTimeout(() => router.push("/admin/dashboard"), 3000); return () => clearTimeout(t); }, [router]);
   return (
-    <AdminReservationsClient 
-      initialBookings={initialBookings} 
-      currentPage={page}
-      currentSortBy={sortBy}
-      currentSortOrder={sortOrder}
-      openNewForm={openNewForm}
-    />
+    <div className="flex flex-col items-center justify-center h-full gap-6 text-center">
+      <div className="w-20 h-20 rounded-3xl bg-gray-100 flex items-center justify-center">
+        <Lock size={36} className="text-gray-300" />
+      </div>
+      <div>
+        <h2 className="text-2xl font-black text-gray-800 uppercase tracking-tight">Reservations</h2>
+        <p className="text-gray-400 text-sm mt-2">Cette fonctionnalite n'est pas encore disponible.</p>
+        <p className="text-gray-300 text-xs mt-1">Redirection vers le tableau de bord...</p>
+      </div>
+    </div>
   );
 }

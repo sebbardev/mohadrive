@@ -1,14 +1,14 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
-const API_URL = "https://mohadrive.com/api";
+const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || session.user.role !== "ADMIN") {
-      return NextResponse.json({ message: "Non autorisé" }, { status: 401 });
+      return NextResponse.json({ message: "Non autorisÃ©" }, { status: 401 });
     }
 
     const { searchParams } = new URL(req.url);
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || session.user.role !== "ADMIN") {
-      return NextResponse.json({ message: "Non autorisé" }, { status: 401 });
+      return NextResponse.json({ message: "Non autorisÃ©" }, { status: 401 });
     }
 
     const body = await req.json();

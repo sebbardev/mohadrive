@@ -1,6 +1,6 @@
-"use server";
+﻿"use server";
 
-const API_BASE_URL = "https://mohadrive.com/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 export async function createBooking(data: any) {
   try {
@@ -15,7 +15,7 @@ export async function createBooking(data: any) {
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({ message: "Erreur serveur" }));
-      return { success: false, error: error.message || "Erreur lors de la réservation" };
+      return { success: false, error: error.message || "Erreur lors de la rÃ©servation" };
     }
 
     const result = await response.json();

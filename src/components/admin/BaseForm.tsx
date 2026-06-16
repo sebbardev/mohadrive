@@ -29,7 +29,7 @@ export default function BaseForm({
   headerVariant = 'default',
 }: BaseFormProps) {
   return (
-    <form onSubmit={onSubmit} className={`space-y-8 animate-fade-in ${className}`}>
+    <div className={`space-y-8 animate-fade-in ${className}`}>
       {/* Form Header */}
       {showHeader && (
         <div className={`mb-8 ${headerClassName}`}>
@@ -86,6 +86,6 @@ export default function BaseForm({
       <div className={`space-y-6 ${contentClassName}`}>
         {children}
       </div>
-    </form>
+    </div>
   );
 }

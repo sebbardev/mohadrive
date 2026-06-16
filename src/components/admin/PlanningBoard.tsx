@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useState, useRef } from "react";
 import { createPortal } from "react-dom";
@@ -44,12 +44,12 @@ import { createExpense } from "@/services/expenseService";
 import { toast } from "react-hot-toast";
 import SuccessMessage from "./SuccessMessage";
 
-const API_BASE_URL = "https://mohadrive.com/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 type ViewMode = "week" | "month";
 
 const DEFAULT_cellWidth = 44;
-const FIRST_COL_WIDTH = 340; // Légèrement plus large pour les miniatures
+const FIRST_COL_WIDTH = 340; // LÃ©gÃ¨rement plus large pour les miniatures
 
 const STATUS_STYLES: Record<string, { label: string; dot: string; border: string; bg: string; text: string; gradient: string }> = {
   PENDING: { 
@@ -61,7 +61,7 @@ const STATUS_STYLES: Record<string, { label: string; dot: string; border: string
     gradient: "from-amber-500/20 to-amber-500/5"
   },
   CONFIRMED: { 
-    label: "Confirmée", 
+    label: "ConfirmÃ©e", 
     dot: "bg-emerald-500", 
     border: "border-emerald-500/30",
     bg: "bg-emerald-500/10",
@@ -77,7 +77,7 @@ const STATUS_STYLES: Record<string, { label: string; dot: string; border: string
     gradient: "from-blue-500/20 to-blue-500/5"
   },
   COMPLETED: { 
-    label: "Terminée", 
+    label: "TerminÃ©e", 
     dot: "bg-slate-500", 
     border: "border-slate-500/30",
     bg: "bg-slate-500/10",
@@ -85,7 +85,7 @@ const STATUS_STYLES: Record<string, { label: string; dot: string; border: string
     gradient: "from-slate-500/20 to-slate-500/5"
   },
   CANCELLED: { 
-    label: "Annulée", 
+    label: "AnnulÃ©e", 
     dot: "bg-rose-500", 
     border: "border-rose-500/30",
     bg: "bg-rose-500/10",
@@ -229,14 +229,14 @@ interface PlanningBoardProps {
   cars: Car[];
 }
 
-const RETURN_EXPENSE_TYPES = ["lavage", "vidange", "réparation", "pneu", "amende"];
+const RETURN_EXPENSE_TYPES = ["lavage", "vidange", "rÃ©paration", "pneu", "amende"];
 
 export default function PlanningBoard({ cars }: PlanningBoardProps) {
   const router = useRouter();
   const { data: session } = useSession();
   const accessToken = (session?.user as any)?.accessToken as string | undefined;
 
-  // ---- Retours à traiter (panneau flottant) ----
+  // ---- Retours Ã  traiter (panneau flottant) ----
   const [mountedPortal, setMountedPortal] = useState(false);
   const [showReturnsPanel, setShowReturnsPanel] = useState(false);
 
@@ -264,7 +264,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
   useEffect(() => { fetchPendingReturns(); }, []);
 
   const handleValidateReturn = async () => {
-    if (!accessToken) { toast.error("Session expirée"); return; }
+    if (!accessToken) { toast.error("Session expirÃ©e"); return; }
     setProcessingReturn(true);
     try {
       const validCharges = returnCharges.filter(c => c.type && c.amount);
@@ -279,7 +279,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
       ));
       const ok = await updateBookingStatus(returnModal.id, "COMPLETED");
       if (ok) {
-        toast.success(`Retour traité${validCharges.length > 0 ? ` + ${validCharges.length} charge(s)` : ""}`);
+        toast.success(`Retour traitÃ©${validCharges.length > 0 ? ` + ${validCharges.length} charge(s)` : ""}`);
         setReturnModal(null);
         setReturnCharges([]);
         fetchPendingReturns();
@@ -287,7 +287,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
       } else {
         toast.error("Erreur lors du traitement");
       }
-    } catch { toast.error("Erreur réseau"); }
+    } catch { toast.error("Erreur rÃ©seau"); }
     finally { setProcessingReturn(false); }
   };
   // ---- fin retours ----
@@ -309,7 +309,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
   const [showCreateBookingModal, setShowCreateBookingModal] = useState(false);
   const [showBlockModal, setShowBlockModal] = useState(false);
 
-  // Mise à jour automatique de la largeur des colonnes
+  // Mise Ã  jour automatique de la largeur des colonnes
   useEffect(() => {
     const updateWidth = () => {
       if (!containerRef.current) return;
@@ -321,7 +321,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
         const newCellWidth = Math.max(DEFAULT_cellWidth, availableWidth / 7);
         setCellWidth(newCellWidth);
       } else {
-        // En mode mois, on garde la largeur par défaut
+        // En mode mois, on garde la largeur par dÃ©faut
         setCellWidth(DEFAULT_cellWidth);
       }
     };
@@ -382,7 +382,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
       setLoading(false);
     });
 
-    // Mise à jour automatique toutes les 5 secondes (polling)
+    // Mise Ã  jour automatique toutes les 5 secondes (polling)
     const interval = setInterval(() => {
       load().catch(() => {});
     }, 5000);
@@ -437,7 +437,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
     setLoading(true);
     const ok = await updateBookingStatus(bookingId, status);
     if (!ok) {
-      setError("Erreur lors de la mise à jour du statut.");
+      setError("Erreur lors de la mise Ã  jour du statut.");
       setLoading(false);
       return;
     }
@@ -447,7 +447,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
 
   const onDeleteUnavailability = async (id: string) => {
     if (!accessToken) {
-      setError("Vous devez être connecté.");
+      setError("Vous devez Ãªtre connectÃ©.");
       return;
     }
     setLoading(true);
@@ -466,10 +466,10 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
       const from = formatDateShortFR(rangeStart);
       const to = formatDateShortFR(rangeEnd);
       const year = rangeStart.getFullYear();
-      return `Semaine du ${from} → ${to} ${year}`;
+      return `Semaine du ${from} â†’ ${to} ${year}`;
     }
     const monthLabel = cursorDate.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
-    return `${monthLabel} • ${days.length} jours`;
+    return `${monthLabel} â€¢ ${days.length} jours`;
   }, [cursorDate, days.length, rangeEnd, rangeStart, viewMode]);
 
   return (
@@ -482,7 +482,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
               <button
                 onClick={goPrev}
                 className="admin-btn-icon !p-2 hover:bg-gray-50 transition-colors"
-                title="Précédent"
+                title="PrÃ©cÃ©dent"
               >
                 <ChevronLeft size={18} />
               </button>
@@ -506,7 +506,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
                 {headerLabel}
               </p>
               <p className="admin-label !text-[9px] font-bold opacity-60">
-                {filteredCars.length} véhicule(s) disponible(s)
+                {filteredCars.length} vÃ©hicule(s) disponible(s)
               </p>
             </div>
           </div>
@@ -543,7 +543,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
 
             {/* Date/Month Selector */}
             <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl px-3 py-1.5 shadow-sm w-full sm:w-[170px] lg:w-[160px] xl:w-[170px] shrink-0 hover:border-[var(--color-primary)]/30 transition-colors overflow-hidden">
-              <span className="admin-label !text-[8px] font-black opacity-40 uppercase shrink-0">{viewMode === "week" ? "Début" : "Mois"}</span>
+              <span className="admin-label !text-[8px] font-black opacity-40 uppercase shrink-0">{viewMode === "week" ? "DÃ©but" : "Mois"}</span>
               <input
                 type={viewMode === "week" ? "date" : "month"}
                 value={viewMode === "week" ? formatDateISO(rangeStart) : formatMonthValue(cursorDate)}
@@ -562,7 +562,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
                   className="admin-btn-primary !py-2.5 !px-4 !rounded-2xl group/btn shrink-0 !bg-gradient-to-r !from-[var(--color-accent)] !to-[var(--color-highlight)] hover:!from-[var(--color-highlight)] hover:!to-[var(--color-accent)] shadow-xl"
                 >
                   <Plus size={15} strokeWidth={3} className="group-hover/btn:rotate-90 transition-transform" />
-                  <span className="text-[9px] font-black uppercase tracking-wider whitespace-nowrap">Réservation</span>
+                  <span className="text-[9px] font-black uppercase tracking-wider whitespace-nowrap">RÃ©servation</span>
                 </button>
               <button
                 onClick={() => setShowBlockModal(true)}
@@ -710,7 +710,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
                               </p>
                             </div>
                             <p className="text-[8px] text-orange-500/70 font-black uppercase tracking-widest mt-0.5 truncate">
-                              {formatDateShortFR(startRaw)} → {formatDateShortFR(endRaw)}
+                              {formatDateShortFR(startRaw)} â†’ {formatDateShortFR(endRaw)}
                             </p>
                           </button>
                         );
@@ -751,7 +751,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
                               </div>
                               <div className="flex items-center justify-between gap-2">
                                 <p className="text-[9px] text-gray-500/80 font-black uppercase tracking-widest truncate">
-                                  {formatDateShortFR(startRaw)} → {formatDateShortFR(endRaw)}
+                                  {formatDateShortFR(startRaw)} â†’ {formatDateShortFR(endRaw)}
                                 </p>
                                 <span className="text-[9px] font-black text-gray-400 whitespace-nowrap">
                                   {formatTime(startRaw)}
@@ -771,7 +771,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
                   <div className="w-20 h-20 bg-gray-50 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-gray-100 shadow-inner">
                     <Filter className="text-gray-200" size={32} />
                   </div>
-                  <p className="admin-label tracking-[0.3em]">Aucun véhicule ne correspond</p>
+                  <p className="admin-label tracking-[0.3em]">Aucun vÃ©hicule ne correspond</p>
                 </div>
               )}
             </div>
@@ -781,7 +781,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
         {loading && (
           <div className="p-6 border-t border-gray-100 bg-gray-50/50 flex items-center gap-3 text-[var(--color-primary)]">
             <Loader2 className="animate-spin" size={18} />
-            <p className="admin-label">Mise à jour du planning...</p>
+            <p className="admin-label">Mise Ã  jour du planning...</p>
           </div>
         )}
       </div>
@@ -839,14 +839,14 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
         />
       )}
 
-      {/* Bouton flottant retours — porté vers document.body */}
+      {/* Bouton flottant retours â€” portÃ© vers document.body */}
       {mountedPortal && pendingReturns.length > 0 && createPortal(
         <button
           onClick={() => setShowReturnsPanel(true)}
           className="fixed bottom-8 right-8 z-[199] flex items-center gap-3 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white px-5 py-3 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-200"
         >
           <RotateCcw size={18} />
-          <span className="text-[10px] font-black uppercase tracking-widest">Retours à traiter</span>
+          <span className="text-[10px] font-black uppercase tracking-widest">Retours Ã  traiter</span>
           <span className="bg-white text-[var(--color-primary)] text-xs font-black rounded-full w-6 h-6 flex items-center justify-center">
             {pendingReturns.length}
           </span>
@@ -854,7 +854,7 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
         document.body
       )}
 
-      {/* Slide-over + modal retour — portés vers document.body */}
+      {/* Slide-over + modal retour â€” portÃ©s vers document.body */}
       {mountedPortal && (showReturnsPanel || returnModal) && createPortal(
         <>
           {/* Slide-over retours */}
@@ -871,8 +871,8 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
                       <RotateCcw size={18} />
                     </div>
                     <div>
-                      <h2 className="admin-section-title">Retours <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-highlight)]">à Traiter</span></h2>
-                      <p className="admin-label">{pendingReturns.length} véhicule(s) à réceptionner</p>
+                      <h2 className="admin-section-title">Retours <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-highlight)]">Ã  Traiter</span></h2>
+                      <p className="admin-label">{pendingReturns.length} vÃ©hicule(s) Ã  rÃ©ceptionner</p>
                     </div>
                   </div>
                   <button onClick={() => setShowReturnsPanel(false)} className="admin-btn-icon">
@@ -933,13 +933,13 @@ export default function PlanningBoard({ cars }: PlanningBoardProps) {
                     </div>
                     <div>
                       <h3 className="admin-section-title">Traiter le retour</h3>
-                      <p className="admin-label">{returnModal.car?.brand} {returnModal.car?.model} — {returnModal.first_name} {returnModal.last_name}</p>
+                      <p className="admin-label">{returnModal.car?.brand} {returnModal.car?.model} â€” {returnModal.first_name} {returnModal.last_name}</p>
                     </div>
                   </div>
                   <button onClick={() => setReturnModal(null)} className="admin-btn-icon"><X size={18} /></button>
                 </div>
                 <div className="p-6 space-y-4 max-h-[50vh] overflow-y-auto">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Charges à enregistrer <span className="normal-case font-medium">(optionnel)</span></p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Charges Ã  enregistrer <span className="normal-case font-medium">(optionnel)</span></p>
                   {returnCharges.map((charge, i) => (
                     <div key={i} className="flex items-center gap-2">
                       <select
@@ -1009,7 +1009,7 @@ function ModalShell({
 
   useEffect(() => {
     setMounted(true);
-    // Empêcher le défilement du corps quand le modal est ouvert
+    // EmpÃªcher le dÃ©filement du corps quand le modal est ouvert
     const originalStyle = window.getComputedStyle(document.body).overflow;
     document.body.style.overflow = 'hidden';
     return () => {
@@ -1101,12 +1101,12 @@ function BookingDetailsModal({
 
   return (
     <ModalShell
-      title={`Réservation • ${car.brand} ${car.model}`}
-      subtitle={`${booking.firstName} ${booking.lastName} • ${statusStyle.label}`}
+      title={`RÃ©servation â€¢ ${car.brand} ${car.model}`}
+      subtitle={`${booking.firstName} ${booking.lastName} â€¢ ${statusStyle.label}`}
       onClose={onClose}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Colonne Gauche - Client & Période */}
+        {/* Colonne Gauche - Client & PÃ©riode */}
         <div className="lg:col-span-7 space-y-6 flex flex-col h-full">
           {/* Bloc Client */}
           <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm group/info transition-all hover:border-[var(--color-primary)]/20 hover:shadow-md">
@@ -1130,18 +1130,18 @@ function BookingDetailsModal({
             </div>
           </div>
 
-          {/* Bloc Période */}
+          {/* Bloc PÃ©riode */}
           <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm group/info transition-all hover:border-[var(--color-primary)]/20 hover:shadow-md flex-grow">
-            <p className="admin-label !text-[9px] mb-5 font-black uppercase tracking-[0.2em] opacity-50">Période de location</p>
+            <p className="admin-label !text-[9px] mb-5 font-black uppercase tracking-[0.2em] opacity-50">PÃ©riode de location</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative">
               <div className="space-y-4">
                 <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 shadow-sm border border-emerald-100">
                   <Calendar size={22} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Départ prévu</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">DÃ©part prÃ©vu</p>
                   <p className="text-sm font-black text-[var(--color-text-main)] uppercase bg-gray-50 p-3 rounded-xl inline-block">
-                    {formatDateShortFR(startRaw)} à {formatTime(startRaw)}
+                    {formatDateShortFR(startRaw)} Ã  {formatTime(startRaw)}
                   </p>
                 </div>
               </div>
@@ -1151,9 +1151,9 @@ function BookingDetailsModal({
                   <Calendar size={22} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Retour prévu</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Retour prÃ©vu</p>
                   <p className="text-sm font-black text-[var(--color-text-main)] uppercase bg-gray-50 p-3 rounded-xl inline-block">
-                    {formatDateShortFR(endRaw)} à {formatTime(endRaw)}
+                    {formatDateShortFR(endRaw)} Ã  {formatTime(endRaw)}
                   </p>
                 </div>
               </div>
@@ -1161,7 +1161,7 @@ function BookingDetailsModal({
 
             <div className="mt-8 pt-6 border-t border-gray-50 flex items-center justify-between">
               <div className="flex flex-col">
-                <span className="admin-label !text-[8px] font-black opacity-50">Durée calculée</span>
+                <span className="admin-label !text-[8px] font-black opacity-50">DurÃ©e calculÃ©e</span>
                 <span className="text-lg font-black text-[var(--color-primary)] uppercase">{chargedDays} jour(s) de location</span>
               </div>
               <div className="px-4 py-2 bg-gray-50 rounded-full border border-gray-100 text-[10px] font-black uppercase text-gray-400">
@@ -1176,7 +1176,7 @@ function BookingDetailsModal({
           {/* Bloc Paiement */}
           <div className="bg-[var(--color-primary)] rounded-[2.5rem] p-8 shadow-[0_20px_40px_-12px_rgba(var(--color-primary-rgb),0.3)] relative overflow-hidden group/price">
             <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -mr-24 -mt-24 blur-3xl transition-all group-hover/price:scale-125" />
-            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em] mb-3">Total à percevoir</p>
+            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.2em] mb-3">Total Ã  percevoir</p>
             <div className="flex items-baseline gap-3">
               <p className="text-5xl font-black text-white tracking-tighter drop-shadow-sm">
                 {Math.round(booking.totalPrice).toLocaleString()}
@@ -1198,7 +1198,7 @@ function BookingDetailsModal({
 
           {/* Bloc Actions & Statut */}
           <div className="bg-gray-50 border border-gray-100 rounded-[2.5rem] p-8 shadow-inner flex-grow flex flex-col">
-            <p className="admin-label !text-[9px] mb-6 font-black uppercase tracking-[0.2em] opacity-50 text-center">Gestion de la réservation</p>
+            <p className="admin-label !text-[9px] mb-6 font-black uppercase tracking-[0.2em] opacity-50 text-center">Gestion de la rÃ©servation</p>
             
             <div className="space-y-4 mt-auto">
               {booking.status === "CONFIRMED" && (
@@ -1208,7 +1208,7 @@ function BookingDetailsModal({
                 >
                   <div className="flex items-center gap-4">
                     <FilePlus size={22} className="group-hover/btn:scale-110 transition-transform duration-300" />
-                    Générer le contrat
+                    GÃ©nÃ©rer le contrat
                   </div>
                   <ChevronRightIcon size={20} />
                 </button>
@@ -1259,20 +1259,20 @@ function UnavailabilityDetailsModal({
 
   return (
     <ModalShell
-      title={`Blocage • ${car.brand} ${car.model}`}
+      title={`Blocage â€¢ ${car.brand} ${car.model}`}
       subtitle={UNAVAILABILITY_LABELS[item.type] ?? item.type}
       onClose={onClose}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 shadow-inner">
-          <p className="admin-label mb-3">Période de blocage</p>
+          <p className="admin-label mb-3">PÃ©riode de blocage</p>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-white border border-gray-100 flex items-center justify-center text-orange-500 shadow-sm">
                 <Calendar size={14} />
               </div>
               <p className="text-xs font-black text-[var(--color-text-main)] uppercase">
-                Du {formatDateShortFR(startRaw)} à {formatTime(startRaw)}
+                Du {formatDateShortFR(startRaw)} Ã  {formatTime(startRaw)}
               </p>
             </div>
             <div className="flex items-center gap-3">
@@ -1280,15 +1280,15 @@ function UnavailabilityDetailsModal({
                 <Calendar size={14} />
               </div>
               <p className="text-xs font-black text-[var(--color-text-main)] uppercase">
-                Au {formatDateShortFR(endRaw)} à {formatTime(endRaw)}
+                Au {formatDateShortFR(endRaw)} Ã  {formatTime(endRaw)}
               </p>
             </div>
           </div>
         </div>
         <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 shadow-inner">
-          <p className="admin-label mb-2">Informations complémentaires</p>
+          <p className="admin-label mb-2">Informations complÃ©mentaires</p>
           <p className="text-xs text-[var(--color-text-main)] font-bold bg-white p-4 rounded-xl border border-gray-100 shadow-sm min-h-[80px]">
-            {item.note || "Aucune note précisée pour ce blocage."}
+            {item.note || "Aucune note prÃ©cisÃ©e pour ce blocage."}
           </p>
         </div>
       </div>
@@ -1382,7 +1382,7 @@ function CreateBookingModal({
       email: customer.email,
       phone: customer.phone,
     }));
-    toast.success("Client sélectionné");
+    toast.success("Client sÃ©lectionnÃ©");
   };
 
   useEffect(() => {
@@ -1415,12 +1415,12 @@ function CreateBookingModal({
     setError("");
 
     if (!accessToken) {
-      setError("Vous devez être connecté.");
+      setError("Vous devez Ãªtre connectÃ©.");
       return;
     }
 
     if (!selectedCar) {
-      setError("Véhicule invalide.");
+      setError("VÃ©hicule invalide.");
       return;
     }
 
@@ -1467,9 +1467,9 @@ function CreateBookingModal({
         onClose={onClose}
       >
         <SuccessMessage
-          title="Réservation"
-          highlightedText="Créée avec succès !"
-          message="La réservation a été enregistrée avec succès. Elle est maintenant visible dans le planning."
+          title="RÃ©servation"
+          highlightedText="CrÃ©Ã©e avec succÃ¨s !"
+          message="La rÃ©servation a Ã©tÃ© enregistrÃ©e avec succÃ¨s. Elle est maintenant visible dans le planning."
           autoCloseDelay={3000}
           onClose={onClose}
         />
@@ -1479,8 +1479,8 @@ function CreateBookingModal({
 
   return (
     <ModalShell 
-      title={`Nouvelle ${carDisplayName ? `Réservation • ${carDisplayName}` : 'Réservation'}`} 
-      subtitle="Remplissez le formulaire pour créer cette réservation"
+      title={`Nouvelle ${carDisplayName ? `RÃ©servation â€¢ ${carDisplayName}` : 'RÃ©servation'}`} 
+      subtitle="Remplissez le formulaire pour crÃ©er cette rÃ©servation"
       onClose={onClose}
     >
       {error && (
@@ -1491,7 +1491,7 @@ function CreateBookingModal({
 
       <form onSubmit={submit} className="space-y-6 relative z-10">
         <div className="p-5 bg-[var(--color-bg)] rounded-xl space-y-3">
-          <label className="block text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">Sélectionner un client existant (Optionnel)</label>
+          <label className="block text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">SÃ©lectionner un client existant (Optionnel)</label>
           <select
             onChange={(e) => handleCustomerSelect(e.target.value)}
             className="w-full px-5 py-3.5 bg-white border border-transparent text-[var(--color-text)] rounded-xl outline-none focus:ring-2 focus:ring-[var(--color-secondary)] text-sm font-bold"
@@ -1508,7 +1508,7 @@ function CreateBookingModal({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">Véhicule</label>
+            <label className="block text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">VÃ©hicule</label>
             <select
               value={form.carId}
               onChange={(e) =>
@@ -1538,17 +1538,17 @@ function CreateBookingModal({
               required
             >
               <option value="PENDING">En attente</option>
-              <option value="CONFIRMED">Confirmée</option>
+              <option value="CONFIRMED">ConfirmÃ©e</option>
               <option value="IN_PROGRESS">En cours</option>
-              <option value="COMPLETED">Terminée</option>
-              <option value="CANCELLED">Annulée</option>
+              <option value="COMPLETED">TerminÃ©e</option>
+              <option value="CANCELLED">AnnulÃ©e</option>
             </select>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Date de début</label>
+            <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Date de dÃ©but</label>
             <input
               type="date"
               value={form.startDate}
@@ -1558,7 +1558,7 @@ function CreateBookingModal({
             />
           </div>
           <div>
-            <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Heure de départ</label>
+            <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Heure de dÃ©part</label>
             <input
               type="time"
               value={form.startTime}
@@ -1594,7 +1594,7 @@ function CreateBookingModal({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Prénom</label>
+            <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">PrÃ©nom</label>
             <input
               value={form.firstName}
               onChange={(e) => setForm((p) => ({ ...p, firstName: e.target.value }))}
@@ -1617,7 +1617,7 @@ function CreateBookingModal({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Téléphone</label>
+            <label className="block text-[9px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">TÃ©lÃ©phone</label>
             <input
               value={form.phone}
               onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
@@ -1666,14 +1666,14 @@ function CreateBookingModal({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Calendar size={16} className="text-gray-400" />
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Durée totale</span>
+                <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">DurÃ©e totale</span>
               </div>
               <span className="text-sm font-black text-[var(--color-text)]">{chargedDays} Jours</span>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <CreditCard size={16} className="text-gray-400" />
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Tarif appliqué</span>
+                <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Tarif appliquÃ©</span>
               </div>
               <span className="text-sm font-black text-[var(--color-text)]">{form.dailyPrice} MAD/Jour</span>
             </div>
@@ -1696,7 +1696,7 @@ function CreateBookingModal({
           className="w-full admin-btn-active font-black py-4 rounded-xl uppercase tracking-widest text-xs transition-all shadow-xl disabled:opacity-50 flex items-center justify-center gap-3"
         >
           {loading ? <Loader2 className="animate-spin" size={18} /> : null}
-          Confirmer la Réservation
+          Confirmer la RÃ©servation
         </button>
       </form>
     </ModalShell>
@@ -1734,7 +1734,7 @@ function BlockCarModal({
     setError("");
 
     if (!accessToken) {
-      setError("Vous devez être connecté.");
+      setError("Vous devez Ãªtre connectÃ©.");
       return;
     }
 
@@ -1783,8 +1783,8 @@ function BlockCarModal({
       >
         <SuccessMessage
           title="Voiture"
-          highlightedText="Bloquée avec succès !"
-          message={`${carName} est maintenant en période de ${typeLabel.toLowerCase()}. Le blocage est visible dans le planning.`}
+          highlightedText="BloquÃ©e avec succÃ¨s !"
+          message={`${carName} est maintenant en pÃ©riode de ${typeLabel.toLowerCase()}. Le blocage est visible dans le planning.`}
           autoCloseDelay={3000}
           onClose={onClose}
         />
@@ -1793,7 +1793,7 @@ function BlockCarModal({
   }
 
   return (
-    <ModalShell title="Bloquer une voiture" subtitle="Maintenance, panne, nettoyage, indisponibilité…" onClose={onClose}>
+    <ModalShell title="Bloquer une voiture" subtitle="Maintenance, panne, nettoyage, indisponibilitÃ©â€¦" onClose={onClose}>
       {error && (
         <div className="mb-6 bg-red-500/10 border border-red-500/50 text-red-500 p-3 rounded-xl text-xs font-black text-center uppercase tracking-tight">
           {error}
@@ -1836,7 +1836,7 @@ function BlockCarModal({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="admin-label mb-2 block">Début</label>
+            <label className="admin-label mb-2 block">DÃ©but</label>
             <input
               type="date"
               value={form.startDate}
@@ -1862,7 +1862,7 @@ function BlockCarModal({
           <input
             value={form.note}
             onChange={(e) => setForm((p) => ({ ...p, note: e.target.value }))}
-            placeholder="Ex: vidange + pneus, nettoyage intérieur…"
+            placeholder="Ex: vidange + pneus, nettoyage intÃ©rieurâ€¦"
             className="admin-input"
           />
         </div>

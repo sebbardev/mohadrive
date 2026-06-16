@@ -1,4 +1,4 @@
-const API_URL = "https://mohadrive.com/api";
+﻿const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 export type UnavailabilityType = "MAINTENANCE" | "NETTOYAGE" | "PANNE" | "INDISPONIBLE";
 
@@ -40,7 +40,7 @@ export async function getUnavailabilities(params?: {
     const { data } = await response.json();
     return data.map(mapLaravelUnavailabilityToFrontend);
   } catch (error) {
-    console.error("Erreur lors de la récupération des indisponibilités:", error);
+    console.error("Erreur lors de la rÃ©cupÃ©ration des indisponibilitÃ©s:", error);
     return [];
   }
 }
@@ -79,7 +79,7 @@ export async function createUnavailability(
 
     return { success: true, item: mapLaravelUnavailabilityToFrontend(data.data ?? data) };
   } catch (error) {
-    return { success: false, error: "Erreur réseau" };
+    return { success: false, error: "Erreur rÃ©seau" };
   }
 }
 
@@ -103,7 +103,7 @@ export async function deleteUnavailability(
 
     return { success: true };
   } catch (error) {
-    return { success: false, error: "Erreur réseau" };
+    return { success: false, error: "Erreur rÃ©seau" };
   }
 }
 

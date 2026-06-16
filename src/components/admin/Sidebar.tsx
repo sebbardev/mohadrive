@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,7 +21,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useState, useEffect, useCallback, memo } from "react";
 
-const API_BASE_URL = "https://mohadrive.com/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -87,18 +87,18 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
   }, [fetchBadges]);
 
   const menuItems = [
-    { icon: LayoutDashboard, label: "Tableau de bord", href: "/admin/dashboard", badge: 0 },
-    { icon: CalendarDays, label: "Réservations", href: "/admin/reservations", badge: badges.reservations },
-    { icon: Clock, label: "Planning", href: "/admin/planning", badge: 0 },
-    { icon: FileText, label: "Contrats", href: "/admin/contracts", badge: 0 },
-    { icon: Car, label: "Véhicules", href: "/admin/voitures", badge: 0 },
-    { icon: Users, label: "Clients", href: "/admin/customers", badge: 0 },
-    { icon: Star, label: "Avis", href: "/admin/reviews", badge: badges.reviews },
-    { icon: CreditCard, label: "Charges", href: "/admin/expenses", badge: 0 },
-    { icon: TrendingUp, label: "Statistiques", href: "/admin/stats", badge: 0 },
-    { icon: MessageSquare, label: "Messages", href: "/admin/messages", badge: badges.messages },
-    { icon: Bell, label: "Notifications", href: "/admin/notifications", badge: badges.notifications },
-    { icon: Settings, label: "Paramètres", href: "/admin/settings", badge: 0 },
+    { icon: LayoutDashboard, label: "Tableau de bord", href: "/admin/dashboard", badge: 0, disabled: false },
+    { icon: CalendarDays, label: "Réservations", href: "/admin/reservations", badge: badges.reservations, disabled: true },
+    { icon: Clock, label: "Planning", href: "/admin/planning", badge: 0, disabled: true },
+    { icon: FileText, label: "Contrats", href: "/admin/contracts", badge: 0, disabled: true },
+    { icon: Car, label: "Véhicules", href: "/admin/voitures", badge: 0, disabled: false },
+    { icon: Users, label: "Clients", href: "/admin/customers", badge: 0, disabled: true },
+    { icon: Star, label: "Avis", href: "/admin/reviews", badge: badges.reviews, disabled: false },
+    { icon: CreditCard, label: "Charges", href: "/admin/expenses", badge: 0, disabled: true },
+    { icon: TrendingUp, label: "Statistiques", href: "/admin/stats", badge: 0, disabled: true },
+    { icon: MessageSquare, label: "Messages", href: "/admin/messages", badge: badges.messages, disabled: false },
+    { icon: Bell, label: "Notifications", href: "/admin/notifications", badge: badges.notifications, disabled: false },
+    { icon: Settings, label: "Paramètres", href: "/admin/settings", badge: 0, disabled: false },
   ];
 
   return (
@@ -131,6 +131,22 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
         <nav className="flex-1 px-4 py-4 space-y-2 admin-scroll-container">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
+            if (item.disabled) {
+              return (
+                <div
+                  key={item.href}
+                  className="flex items-center justify-between px-4 py-4 rounded-2xl cursor-not-allowed opacity-35 select-none"
+                >
+                  <div className="flex items-center gap-4">
+                    <item.icon size={18} className="text-gray-300" />
+                    <span className="font-black uppercase text-[10px] tracking-widest text-gray-300">{item.label}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-300"><rect width="11" height="11" x="11" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </div>
+                </div>
+              );
+            }
             return (
               <Link
                 key={item.href}
@@ -168,7 +184,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
             className="flex items-center gap-4 px-4 py-4 w-full text-red-400 hover:bg-red-50 hover:text-red-500 rounded-2xl transition-all font-black uppercase text-[10px] tracking-widest"
           >
             <LogOut size={18} />
-            <span>Déconnexion</span>
+            <span>DÃ©connexion</span>
           </button>
         </div>
       </aside>

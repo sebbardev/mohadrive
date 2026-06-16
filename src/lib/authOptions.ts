@@ -15,7 +15,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const API_URL = "https://www.mohadrive.com/api";
+          const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://www.mohadrive.com/api";
           const response = await fetch(`${API_URL}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },

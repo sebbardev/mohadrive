@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
-const API_URL = "https://mohadrive.com/api";
+const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     
     if (!session?.user || (session.user as any).role !== "ADMIN") {
-      return NextResponse.json({ message: "Non autorisé" }, { status: 403 });
+      return NextResponse.json({ message: "Non autorisÃ©" }, { status: 403 });
     }
 
     const apiUrl = `${API_URL}/contact-messages/stats/unread-count`;

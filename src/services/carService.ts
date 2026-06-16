@@ -33,6 +33,14 @@ export interface Car {
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
+const BACKEND_URL = API_URL.replace(/\/api$/, "");
+
+function toAbsoluteImageUrl(path: string): string {
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  if (path.startsWith("/uploads/")) return path;
+  return `${BACKEND_URL}/${path.replace(/^\//, "")}`;
+}
 
 // Cache for API responses to reduce unnecessary calls
 const cache = new Map<string, { data: any; timestamp: number }>();
@@ -74,10 +82,11 @@ function mapLaravelCarToFrontend(laravelCar: any): Car {
     fuel: laravelCar.fuel || "",
     transmission: laravelCar.transmission || "",
     category: laravelCar.category || "",
-    image: laravelCar.image || "",
-    images: Array.isArray(laravelCar.images) 
+    image: toAbsoluteImageUrl(laravelCar.image || ""),
+    images: (Array.isArray(laravelCar.images) 
       ? laravelCar.images 
-      : (typeof laravelCar.images === 'string' ? JSON.parse(laravelCar.images || "[]") : []),
+      : (typeof laravelCar.images === 'string' ? JSON.parse(laravelCar.images || "[]") : [])
+    ).map(toAbsoluteImageUrl),
     description: laravelCar.description || "",
     features: Array.isArray(laravelCar.features) 
       ? laravelCar.features 

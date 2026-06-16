@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useFormContext } from './FormContext';
 
 interface AdminFormFieldProps {
@@ -26,7 +26,6 @@ export function AdminFormField({
 }: AdminFormFieldProps) {
   const [fieldError, setFieldError] = useState<string | undefined>(error);
   const { errors, clearErrors } = useFormContext();
-  const inputRef = useRef<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(null);
   
   // Update error state when context errors change
   useEffect(() => {
@@ -37,12 +36,6 @@ export function AdminFormField({
     }
   }, [errors, name, fieldError]);
   
-  // Focus on first render for better UX
-  useEffect(() => {
-    if (inputRef.current && !fieldError) {
-      inputRef.current.focus();
-    }
-  }, [fieldError]);
   
   const handleFocus = () => {
     if (fieldError) {
@@ -94,6 +87,7 @@ export function AdminTextInput({
   className = '',
   onChange,
   onKeyPress,
+  inputClassName: _ic,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   placeholder?: string;
@@ -141,6 +135,7 @@ export function AdminSelectInput({
   helperText,
   className = '',
   onChange,
+  inputClassName: _ic2,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   options: { value: string; label: string }[];
@@ -187,6 +182,7 @@ export function AdminTextareaInput({
   helperText,
   className = '',
   onChange,
+  inputClassName: _ic3,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   placeholder?: string;
@@ -232,6 +228,7 @@ export function AdminNumberInput({
   helperText,
   className = '',
   onChange,
+  inputClassName: _ic4,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   placeholder?: string;
@@ -280,6 +277,7 @@ export function AdminDateInput({
   helperText,
   className = '',
   onChange,
+  inputClassName: _ic5,
   ...props
 }: Omit<AdminFormFieldProps, 'children'> & {
   defaultValue?: string;

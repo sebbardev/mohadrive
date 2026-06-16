@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -147,7 +147,7 @@ export default function CarForm({ initialData, isEditing = false, onSuccess, onC
         return;
       }
 
-      const API_URL = "https://mohadrive.com/api";
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
       const method = isEditing ? "PUT" : "POST";
       const url = isEditing ? `${API_URL}/cars/${initialData.id}` : `${API_URL}/cars`;
 
@@ -332,121 +332,28 @@ export default function CarForm({ initialData, isEditing = false, onSuccess, onC
           </div>
         </AdminFormSection>
 
-        {/* Section: Paramètres Financiers (Automatisation des charges) */}
-        <AdminFormSection title="Paramètres Financiers (Automatisation)" icon={<Calendar size={20} className="text-orange-400" />}> 
-          <div className="space-y-8">
-            {/* Toggle Crédit */}
-            <div className="flex items-center justify-between p-6 bg-orange-50/30 rounded-2xl border border-orange-100/50 shadow-inner">
-              <div className="flex items-center gap-4">
-                <div className={`w-14 h-7 rounded-full relative cursor-pointer transition-all duration-500 ${formData.has_credit ? "bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-highlight)] hover:from-[var(--color-highlight)] hover:to-[var(--color-accent)]" : "bg-gray-200"}`} onClick={() => setFormData(prev => ({...prev, has_credit: !prev.has_credit}))}>
-                  <div className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-all duration-500 shadow-md ${formData.has_credit ? "left-8" : "left-1"}`} />
-                </div>
-                <div>
-                  <span className="admin-label block">Financement par Crédit</span>
-                  <span className="text-[8px] font-bold text-orange-400 uppercase">{formData.has_credit ? "Véhicule sous crédit actif" : "Véhicule payé au comptant"}</span>
-                </div>
+        {/* Section: Param\u00e8tres Financiers - DISABLED */}
+        <AdminFormSection title="Param\u00e8tres Financiers (Automatisation)" icon={<Calendar size={20} className="text-orange-400" />}>
+          <div className="relative">
+            <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px] rounded-2xl z-10 flex flex-col items-center justify-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-300"><rect width="11" height="11" x="11" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               </div>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Fonctionnalit\u00e9 bient\u00f4t disponible</p>
             </div>
-
-            {/* Champs Crédit (Conditionnels) */}
-            {formData.has_credit && (
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 animate-in fade-in slide-in-from-top-4 duration-500">
-                <AdminNumberInput
-                  name="monthly_credit"
-                  label="Mensualité (DH) *"
-                  required
-                  min={1}
-                  placeholder="ex: 2500"
-                  defaultValue={formData.monthly_credit}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData(prev => ({...prev, monthly_credit: e.target.value}))}
-                  inputClassName="admin-input border-orange-100"
-                />
-                <AdminDateInput
-                  name="credit_start_date"
-                  label="Début Crédit *"
-                  required
-                  defaultValue={formData.credit_start_date}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData(prev => ({...prev, credit_start_date: e.target.value}))}
-                  inputClassName="admin-input border-orange-100"
-                />
-                <AdminDateInput
-                  name="credit_end_date"
-                  label="Fin Crédit *"
-                  required
-                  min={formData.credit_start_date}
-                  defaultValue={formData.credit_end_date}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData(prev => ({...prev, credit_end_date: e.target.value}))}
-                  inputClassName="admin-input border-orange-100"
-                />
-                <AdminSelectInput
-                  name="credit_payment_day"
-                  label="Jour de Prélèvement"
-                  defaultValue={formData.credit_payment_day}
-                  options={[{ value: "1", label: "Le 01 du mois" }, { value: "5", label: "Le 05 du mois" }, { value: "10", label: "Le 10 du mois" }, { value: "15", label: "Le 15 du mois" }, { value: "20", label: "Le 20 du mois" }, { value: "25", label: "Le 25 du mois" }]}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData(prev => ({...prev, credit_payment_day: e.target.value}))}
-                  inputClassName="admin-input border-orange-100 appearance-none cursor-pointer"
-                />
-              </div>
-            )}
-
-            {/* Assurance & Vignette (Toujours visibles) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-gray-100">
-              {/* Bloc Assurance */}
-              <div className="space-y-4">
-                <h4 className="text-[9px] font-black text-blue-500 uppercase tracking-[0.3em] flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
-                  Assurance Automobile
-                </h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <AdminNumberInput
-                    name="annual_insurance"
-                    label="Prime Annuelle (DH)"
-                    placeholder="0"
-                    defaultValue={formData.annual_insurance}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData(prev => ({...prev, annual_insurance: e.target.value}))}
-                    inputClassName="admin-input bg-blue-50/30"
-                  />
-                  <AdminDateInput
-                    name="insurance_expiry_date"
-                    label="Date d&apos;Échéance"
-                    defaultValue={formData.insurance_expiry_date}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData(prev => ({...prev, insurance_expiry_date: e.target.value}))}
-                    inputClassName="admin-input bg-blue-50/30"
-                  />
+            <div className="opacity-30 pointer-events-none select-none space-y-8">
+              <div className="flex items-center justify-between p-6 bg-orange-50/30 rounded-2xl border border-orange-100/50">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-7 rounded-full bg-gray-200 relative"><div className="absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-md" /></div>
+                  <div><span className="admin-label block">Financement par Cr\u00e9dit</span></div>
                 </div>
               </div>
-
-              {/* Bloc Vignette */}
-              <div className="space-y-4">
-                <h4 className="text-[9px] font-black text-green-500 uppercase tracking-[0.3em] flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-green-400 rounded-full" />
-                  Vignette Annuelle
-                </h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <AdminNumberInput
-                    name="annual_vignette"
-                    label="Montant (DH)"
-                    placeholder="0"
-                    defaultValue={formData.annual_vignette}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData(prev => ({...prev, annual_vignette: e.target.value}))}
-                    inputClassName="admin-input bg-green-50/30"
-                  />
-                  <AdminDateInput
-                    name="vignette_expiry_date"
-                    label="Date d&apos;Échéance"
-                    defaultValue={formData.vignette_expiry_date}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData(prev => ({...prev, vignette_expiry_date: e.target.value}))}
-                    inputClassName="admin-input bg-green-50/30"
-                  />
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-gray-100">
+                <div className="h-20 bg-gray-100 rounded-2xl" />
+                <div className="h-20 bg-gray-100 rounded-2xl" />
               </div>
             </div>
           </div>
-          
-          <p className="mt-8 text-[9px] font-bold text-gray-400 flex items-center gap-2 bg-gray-50 p-4 rounded-2xl border border-gray-100">
-            <Info size={14} className="text-[var(--color-primary)]" />
-            Note: L&apos;assurance et la vignette sont automatiquement lissées sur 12 mois. Le crédit est déduit selon le jour de prélèvement choisi.
-          </p>
         </AdminFormSection>
 
         {/* Section: Configuration & Prix */}
@@ -537,7 +444,7 @@ export default function CarForm({ initialData, isEditing = false, onSuccess, onC
 
         {/* Section: Équipements du véhicule */}
         <AdminFormSection title="Équipements du véhicule" icon={<Check size={20} className="text-[var(--color-primary)]" />}> 
-          <div className="flex flex-wrap gap-3 mb-8">
+          <div className="flex flex-wrap gap-3 mb-6">
             {COMMON_FEATURES.map(feature => (
               <button
                 key={feature}
@@ -553,18 +460,26 @@ export default function CarForm({ initialData, isEditing = false, onSuccess, onC
                 {feature}
               </button>
             ))}
+            {formData.features.filter((f: string) => !COMMON_FEATURES.includes(f)).map((feature: string) => (
+              <span key={feature} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest bg-[var(--color-primary)] border border-[var(--color-primary)] text-white shadow-lg shadow-blue-900/10">
+                <Check size={12} />
+                {feature}
+                <button type="button" onClick={() => setFormData(prev => ({ ...prev, features: prev.features.filter((x: string) => x !== feature) }))} className="ml-1 opacity-70 hover:opacity-100 hover:text-red-300 transition-all"><X size={12} /></button>
+              </span>
+            ))}
           </div>
-          <div className="flex gap-4">
-            <AdminTextInput
-              name="customFeature"
-              label="Ajouter un équipement personnalisé"
-              placeholder="ex: Sièges chauffants"
-              value={newFeature}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFeature(e.target.value)}
-              onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && (e.preventDefault(), addCustomFeature())}
-              inputClassName="flex-grow admin-input"
-            />
-            <button type="button" onClick={addCustomFeature} className="admin-btn-primary whitespace-nowrap">Ajouter</button>
+          <div className="flex items-end gap-4">
+            <div className="flex-1">
+              <AdminTextInput
+                name="customFeature"
+                label="Ajouter un équipement personnalisé"
+                placeholder="ex: Sièges chauffants"
+                value={newFeature}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewFeature(e.target.value)}
+                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && (e.preventDefault(), addCustomFeature())}
+              />
+            </div>
+            <button type="button" onClick={addCustomFeature} className="admin-btn-primary whitespace-nowrap mb-0.5">Ajouter</button>
           </div>
         </AdminFormSection>
 

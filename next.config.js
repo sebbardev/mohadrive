@@ -20,6 +20,16 @@ const nextConfig = {
         protocol: "http",
         hostname: "127.0.0.1",
       },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "8000",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+      },
     ],
     // Enable WebP and AVIF formats for better compression
     formats: ['image/webp', 'image/avif'],

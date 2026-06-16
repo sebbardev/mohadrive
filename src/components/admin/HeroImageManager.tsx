@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
@@ -6,7 +6,7 @@ import { Image, Upload, Trash2, Edit2, GripVertical, X, Check, Plus } from "luci
 import { toast } from "react-hot-toast";
 import type { HeroImage } from "@/lib/api";
 
-const API_BASE_URL = "https://mohadrive.com/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 export default function HeroImageManager() {
   const { data: session } = useSession();
@@ -53,7 +53,7 @@ export default function HeroImageManager() {
 
     const token = getToken();
     if (!token) {
-      toast.error("Non authentifié");
+      toast.error("Non authentifiÃ©");
       return;
     }
 
@@ -72,12 +72,12 @@ export default function HeroImageManager() {
       });
 
       if (response.ok) {
-        toast.success("Image ajoutée avec succès");
+        toast.success("Image ajoutÃ©e avec succÃ¨s");
         await fetchImages();
       } else {
         const error = await response.json().catch(() => ({ message: "Erreur serveur" }));
         console.error("Upload error:", error);
-        toast.error(error.message || `Erreur ${response.status}: Échec de l'upload`);
+        toast.error(error.message || `Erreur ${response.status}: Ã‰chec de l'upload`);
       }
     } catch (error: any) {
       console.error("Upload error:", error);
@@ -91,7 +91,7 @@ export default function HeroImageManager() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Êtes-vous sûr de vouloir supprimer cette image ?")) return;
+    if (!confirm("ÃŠtes-vous sÃ»r de vouloir supprimer cette image ?")) return;
 
     const token = getToken();
     if (!token) return;
@@ -106,7 +106,7 @@ export default function HeroImageManager() {
       });
 
       if (response.ok) {
-        toast.success("Image supprimée");
+        toast.success("Image supprimÃ©e");
         await fetchImages();
       }
     } catch (error) {
@@ -132,11 +132,11 @@ export default function HeroImageManager() {
       });
 
       if (response.ok) {
-        toast.success(image.is_active ? "Image masquée" : "Image affichée");
+        toast.success(image.is_active ? "Image masquÃ©e" : "Image affichÃ©e");
         await fetchImages();
       }
     } catch (error) {
-      toast.error("Erreur lors de la mise à jour");
+      toast.error("Erreur lors de la mise Ã  jour");
     }
   };
 
@@ -160,7 +160,7 @@ export default function HeroImageManager() {
           <div>
             <h2 className="admin-section-title">Images Hero (Page d'accueil)</h2>
             <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">
-              {images.length} image(s) - Défilement automatique toutes les 1 seconde
+              {images.length} image(s) - DÃ©filement automatique toutes les 1 seconde
             </p>
           </div>
         </div>
@@ -202,7 +202,7 @@ export default function HeroImageManager() {
             className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:shadow-lg transition-all"
           >
             <Upload size={16} />
-            Sélectionner une image
+            SÃ©lectionner une image
           </button>
         </div>
       ) : (
@@ -234,7 +234,7 @@ export default function HeroImageManager() {
                   image.is_active ? "bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-highlight)] hover:from-[var(--color-highlight)] hover:to-[var(--color-accent)]/90 text-white" : "bg-gray-500/90 text-white"
                 }`}>
                   <span className="text-[10px] font-black uppercase tracking-wider">
-                    {image.is_active ? "Actif" : "Masqué"}
+                    {image.is_active ? "Actif" : "MasquÃ©"}
                   </span>
                 </div>
               </div>
@@ -287,12 +287,12 @@ export default function HeroImageManager() {
             <Image className="text-blue-500" size={16} />
           </div>
           <div className="text-xs text-blue-700">
-            <p className="font-black uppercase tracking-wider mb-1">Comment ça marche ?</p>
+            <p className="font-black uppercase tracking-wider mb-1">Comment Ã§a marche ?</p>
             <ul className="space-y-1 text-blue-600 font-medium">
-              <li>• Les images défilent automatiquement toutes les 1 seconde sur la page d'accueil</li>
-              <li>• Utilisez le bouton vert pour afficher/masquer une image</li>
-              <li>• Les images sont affichées dans l'ordre (de haut en bas, gauche à droite)</li>
-              <li>• Format recommandé : 1920x1080px ou plus</li>
+              <li>â€¢ Les images dÃ©filent automatiquement toutes les 1 seconde sur la page d'accueil</li>
+              <li>â€¢ Utilisez le bouton vert pour afficher/masquer une image</li>
+              <li>â€¢ Les images sont affichÃ©es dans l'ordre (de haut en bas, gauche Ã  droite)</li>
+              <li>â€¢ Format recommandÃ© : 1920x1080px ou plus</li>
             </ul>
           </div>
         </div>

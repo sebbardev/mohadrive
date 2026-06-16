@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef, useCallback, memo } from "react";
+﻿import { useState, useEffect, useRef, useCallback, memo } from "react";
 import { Bell, Search, User, Menu, X, Calendar, AlertCircle, CheckCircle2, ChevronRight, Star, CreditCard, TrendingUp, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { format, formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 
-const API_BASE_URL = "https://mohadrive.com/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 interface HeaderProps {
   session: any;
@@ -58,7 +58,7 @@ function Header({ session, onMenuClick }: HeaderProps) {
           id: `return-${b.id}`,
           type: 'RETURN' as const,
           title: `Retour ${isOverdue ? 'en retard' : diff === 0 ? "aujourd'hui" : `dans ${diff}j`}`,
-          message: `${b.car?.brand} ${b.car?.model} — ${b.first_name} ${b.last_name} — ${end.toLocaleDateString('fr-FR')}`,
+          message: `${b.car?.brand} ${b.car?.model} â€” ${b.first_name} ${b.last_name} â€” ${end.toLocaleDateString('fr-FR')}`,
           time: isOverdue ? `Retard ${Math.abs(diff)}j` : diff === 0 ? "Aujourd'hui" : `${diff}j`,
           read: false,
           link: '/admin/planning',
@@ -198,22 +198,20 @@ function Header({ session, onMenuClick }: HeaderProps) {
 
       <div className="flex items-center gap-3 md:gap-8">
         {/* Bouton Charges */}
-        <Link 
-          href="/admin/expenses"
-          className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:text-[var(--color-primary)] hover:bg-gray-100 transition-all shadow-sm group"
-          title="Charges"
+        <div
+          className="p-3 rounded-2xl bg-gray-50 text-gray-200 cursor-not-allowed opacity-40 select-none"
+          title="Charges (bientÃ´t disponible)"
         >
           <CreditCard size={18} />
-        </Link>
+        </div>
 
         {/* Bouton Statistiques */}
-        <Link 
-          href="/admin/stats"
-          className="p-3 rounded-2xl bg-gray-50 text-gray-400 hover:text-[var(--color-primary)] hover:bg-gray-100 transition-all shadow-sm group"
-          title="Statistiques"
+        <div
+          className="p-3 rounded-2xl bg-gray-50 text-gray-200 cursor-not-allowed opacity-40 select-none"
+          title="Statistiques (bientÃ´t disponible)"
         >
           <TrendingUp size={18} />
-        </Link>
+        </div>
 
         <div className="relative" ref={notificationRef}>
           <button 

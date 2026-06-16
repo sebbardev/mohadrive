@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
 
     if (!session || session.user.role !== "ADMIN") {
-      return NextResponse.json({ message: "Non autorisé" }, { status: 401 });
+      return NextResponse.json({ message: "Non autorisÃ©" }, { status: 401 });
     }
 
     const accessToken = (session.user as any).accessToken as string | undefined;
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const API_URL = "https://mohadrive.com/api";
+    const API_URL = process.env.API_URL || process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
     const response = await fetch(`${API_URL}/cars`, {
       method: "POST",
       headers: {
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const API_URL = "https://mohadrive.com/api";
+    const API_URL = process.env.API_URL || process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
     const response = await fetch(`${API_URL}/cars`, { cache: "no-store" });
     const data = await response.json().catch(() => null);
     return NextResponse.json(data, { status: response.status });

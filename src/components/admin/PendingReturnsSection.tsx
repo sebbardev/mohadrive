@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
@@ -8,7 +8,7 @@ import { updateBookingStatus } from "@/services/bookingService";
 import { getAllCars } from "@/services/carService";
 import { createExpense } from "@/services/expenseService";
 
-const RETURN_EXPENSE_TYPES = ["lavage", "vidange", "réparation", "pneu", "amende"];
+const RETURN_EXPENSE_TYPES = ["lavage", "vidange", "rÃ©paration", "pneu", "amende"];
 
 export default function PendingReturnsSection() {
   const { data: session } = useSession();
@@ -21,7 +21,7 @@ export default function PendingReturnsSection() {
 
   const fetchReturns = async () => {
     try {
-      const API_URL = "https://mohadrive.com/api";
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
       const res = await fetch(`${API_URL}/bookings?per_page=100&sort_by=end_date&sort_order=asc`);
       const data = await res.json();
       const all: any[] = data.data || [];
@@ -49,7 +49,7 @@ export default function PendingReturnsSection() {
 
   const handleValidate = async () => {
     const accessToken = (session?.user as any)?.accessToken;
-    if (!accessToken) { toast.error("Session expirée"); return; }
+    if (!accessToken) { toast.error("Session expirÃ©e"); return; }
     setProcessingReturn(true);
     try {
       const validCharges = returnCharges.filter(c => c.type && c.amount);
@@ -64,7 +64,7 @@ export default function PendingReturnsSection() {
       ));
       const ok = await updateBookingStatus(returnModal.id, "COMPLETED");
       if (ok) {
-        toast.success(`Retour traité${validCharges.length > 0 ? ` + ${validCharges.length} charge(s)` : ""}`);
+        toast.success(`Retour traitÃ©${validCharges.length > 0 ? ` + ${validCharges.length} charge(s)` : ""}`);
         setReturnModal(null);
         setReturnCharges([]);
         fetchReturns();
@@ -72,7 +72,7 @@ export default function PendingReturnsSection() {
         toast.error("Erreur lors du traitement");
       }
     } catch {
-      toast.error("Erreur réseau");
+      toast.error("Erreur rÃ©seau");
     } finally {
       setProcessingReturn(false);
     }
@@ -94,10 +94,10 @@ export default function PendingReturnsSection() {
               <h2 className="admin-section-title">
                 Retours{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-highlight)]">
-                  à Traiter
+                  Ã  Traiter
                 </span>
               </h2>
-              <p className="admin-label">{bookings.length} véhicule(s) à réceptionner</p>
+              <p className="admin-label">{bookings.length} vÃ©hicule(s) Ã  rÃ©ceptionner</p>
             </div>
           </div>
         </div>
@@ -132,7 +132,7 @@ export default function PendingReturnsSection() {
                       {isOverdue
                         ? `En retard (${Math.abs(diff)}j)`
                         : diff === 0 ? "Aujourd'hui"
-                        : `Dans ${diff}j`} — {endDate.toLocaleDateString("fr-FR")}
+                        : `Dans ${diff}j`} â€” {endDate.toLocaleDateString("fr-FR")}
                     </span>
                   </div>
                 </div>
@@ -160,18 +160,18 @@ export default function PendingReturnsSection() {
                 </div>
                 <div>
                   <h3 className="admin-section-title">Traiter le retour</h3>
-                  <p className="admin-label">{returnModal.car?.brand} {returnModal.car?.model} — {returnModal.first_name} {returnModal.last_name}</p>
+                  <p className="admin-label">{returnModal.car?.brand} {returnModal.car?.model} â€” {returnModal.first_name} {returnModal.last_name}</p>
                 </div>
               </div>
               <button onClick={() => setReturnModal(null)} className="admin-btn-icon">
-                <span className="text-gray-400 hover:text-gray-700 text-lg leading-none">✕</span>
+                <span className="text-gray-400 hover:text-gray-700 text-lg leading-none">âœ•</span>
               </button>
             </div>
 
             <div className="p-6 space-y-5 max-h-[60vh] overflow-y-auto admin-scroll-container">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-3">
-                  Charges à enregistrer <span className="normal-case font-medium">(optionnel)</span>
+                  Charges Ã  enregistrer <span className="normal-case font-medium">(optionnel)</span>
                 </p>
                 {returnCharges.map((charge, i) => (
                   <div key={i} className="flex items-center gap-2 mb-2">
@@ -203,7 +203,7 @@ export default function PendingReturnsSection() {
                       onClick={() => setReturnCharges(prev => prev.filter((_, idx) => idx !== i))}
                       className="admin-btn-icon !text-red-400 hover:!bg-red-50 flex-shrink-0"
                     >
-                      <span className="text-sm leading-none">✕</span>
+                      <span className="text-sm leading-none">âœ•</span>
                     </button>
                   </div>
                 ))}
