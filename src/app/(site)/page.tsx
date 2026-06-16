@@ -13,7 +13,7 @@ import {
   Star,
   ShieldCheck,
   Users,
-  Car,
+  Car as CarIcon,
   Headphones,
   PlaneTakeoff,
   Search,
@@ -204,7 +204,7 @@ export default function Home() {
         <div className="container-custom px-8">
           <div className="grid grid-cols-4 gap-6">
             {[
-              { value: "7", label: "Véhicules disponibles", icon: <Car size={24} />, color: "from-blue-500 to-[var(--color-primary)]" },
+              { value: "7", label: "Véhicules disponibles", icon: <CarIcon size={24} />, color: "from-blue-500 to-[var(--color-primary)]" },
               { value: "5", label: "Marques différentes", icon: <Star size={24} />, color: "from-[var(--color-highlight)] to-[var(--color-accent)]" },
               { value: "100%", label: "Clients satisfaits", icon: <Users size={24} />, color: "from-[var(--color-accent)] to-[var(--color-highlight)]" },
               { value: "6j/7", label: "Service disponible", icon: <Headphones size={24} />, color: "from-[var(--color-secondary)] to-blue-600" },
@@ -583,7 +583,7 @@ export default function Home() {
               {/* Card 2 */}
               <div className="absolute top-1/2 -translate-y-1/2 left-0 bg-white/10 backdrop-blur-xl border border-white/20 rounded-[2rem] p-8 w-60 hover:-translate-y-2 transition-all duration-500" style={{ transitionDelay: '0.1s' }}>
                 <div className="bg-gradient-to-br from-[var(--color-primary)]/80 to-[var(--color-secondary)]/80 p-3 rounded-xl w-fit mb-4">
-                  <Car size={22} className="text-white" />
+                  <CarIcon size={22} className="text-white" />
                 </div>
                 <p className="text-4xl font-black text-white mb-1">7</p>
                 <p className="text-[10px] font-black uppercase tracking-widest text-white/60">Véhicules disponibles</p>
