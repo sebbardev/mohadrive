@@ -46,7 +46,7 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
     lavage: { enabled: false, type: "lavage", amount: "", note: "" },
     entretien: { enabled: false, type: "entretien", amount: "", note: "" },
     vidange: { enabled: false, type: "vidange", amount: "", note: "" },
-    réparation: { enabled: false, type: "réparation", amount: "", note: "" },
+    reparation: { enabled: false, type: "reparation", amount: "", note: "" },
     amendes: { enabled: false, type: "amendes", amount: "", note: "" },
     "autres frais": { enabled: false, type: "autres frais", amount: "", note: "" },
   });
@@ -59,7 +59,7 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
       lavage: { enabled: false, type: "lavage", amount: "", note: "" },
       entretien: { enabled: false, type: "entretien", amount: "", note: "" },
       vidange: { enabled: false, type: "vidange", amount: "", note: "" },
-      réparation: { enabled: false, type: "réparation", amount: "", note: "" },
+      reparation: { enabled: false, type: "reparation", amount: "", note: "" },
       amendes: { enabled: false, type: "amendes", amount: "", note: "" },
       "autres frais": { enabled: false, type: "autres frais", amount: "", note: "" },
     });

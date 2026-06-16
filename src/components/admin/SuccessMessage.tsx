@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { CheckCircle, X } from 'lucide-react';
 
 interface SuccessMessageProps {
@@ -20,6 +20,13 @@ export default function SuccessMessage({
 }: SuccessMessageProps) {
   const [progress, setProgress] = useState(100);
   const [isVisible, setIsVisible] = useState(true);
+
+  const handleClose = useCallback(() => {
+    setIsVisible(false);
+    setTimeout(() => {
+      if (onClose) onClose();
+    }, 300);
+  }, [onClose]);
 
   useEffect(() => {
     const startTime = Date.now();
@@ -46,14 +53,7 @@ export default function SuccessMessage({
       clearTimeout(timer);
       cancelAnimationFrame(animationFrame);
     };
-  }, [autoCloseDelay]);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(() => {
-      if (onClose) onClose();
-    }, 300);
-  };
+  }, [autoCloseDelay, handleClose]);
 
   const circumference = 2 * Math.PI * 40;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
