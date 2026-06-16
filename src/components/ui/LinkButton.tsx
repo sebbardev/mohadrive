@@ -100,7 +100,7 @@ export default function LinkButton({
   const sizes = {
     sm: "px-5 py-2.5 text-[10px] gap-1.5",
     md: "px-7 py-3.5 text-xs gap-2",
-    lg: "px-8 sm:px-12 py-4 sm:py-5 text-xs sm:text-sm gap-2 sm:gap-3",
+    lg: "px-12 py-5 text-sm gap-3",
   };
 
   const linkProps = external

@@ -228,7 +228,7 @@ export default function Testimonials({ initialTestimonials }: TestimonialProps) 
       <div className="container-custom relative z-10">
         <div className="text-center mb-20 max-w-3xl mx-auto">
             <h2 className="text-xs font-black text-[var(--color-highlight)] uppercase tracking-[0.3em] mb-4">Témoignages</h2>
-            <h3 className="text-4xl md:text-5xl font-black text-[var(--color-primary)] uppercase tracking-tighter mb-6">Ce que disent <span className="text-[var(--color-secondary)]">nos clients</span></h3>
+            <h3 className="text-5xl font-black text-[var(--color-primary)] uppercase tracking-tighter mb-6">Ce que disent <span className="text-[var(--color-secondary)]">nos clients</span></h3>
             <p className="text-[var(--color-text-muted)] text-lg font-light leading-relaxed">
               La satisfaction de nos clients est notre priorité absolue. Découvrez leurs retours d'expérience avec MOHADRIVE Location de Voitures.
             </p>
@@ -242,18 +242,18 @@ export default function Testimonials({ initialTestimonials }: TestimonialProps) 
               style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
             >
               {testimonials.map((item) => (
-                <div key={item.id} className="flex-shrink-0 px-3 sm:px-4" style={{ width: `${100 / itemsPerView}%` }}>
-                  <div className="bg-[var(--color-bg)] p-6 sm:p-8 md:p-10 rounded-[2rem] relative h-[320px] md:h-[340px] flex flex-col hover:bg-white transition-all duration-500 hover:-translate-y-2 border border-transparent hover:border-gray-100 hover:shadow-2xl group">
-                    <Quote className="absolute top-6 right-6 sm:top-8 sm:right-8 text-[var(--color-primary)] opacity-10 rotate-180 group-hover:opacity-20 transition-opacity" size={36} />
+                <div key={item.id} className="flex-shrink-0 px-4" style={{ width: `${100 / itemsPerView}%` }}>
+                  <div className="bg-[var(--color-bg)] p-10 rounded-[2rem] relative min-h-[340px] flex flex-col hover:bg-white transition-all duration-500 hover:-translate-y-2 border border-transparent hover:border-gray-100 hover:shadow-2xl group">
+                    <Quote className="absolute top-8 right-8 text-[var(--color-primary)] opacity-10 rotate-180 group-hover:opacity-20 transition-opacity" size={36} />
                     
                     {/* User Info */}
-                    <div className="mb-6 sm:mb-8">
+                    <div className="mb-8">
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] flex items-center justify-center text-white font-black text-lg">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] flex items-center justify-center text-white font-black text-lg shrink-0">
                           {item.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <h4 className="font-black text-[var(--color-primary)] text-lg sm:text-xl uppercase tracking-tight group-hover:text-[var(--color-secondary)] transition-colors">
+                          <h4 className="font-black text-[var(--color-primary)] text-xl uppercase tracking-tight group-hover:text-[var(--color-secondary)] transition-colors">
                             {item.name}
                           </h4>
                           {item.role && (
@@ -264,15 +264,15 @@ export default function Testimonials({ initialTestimonials }: TestimonialProps) 
                     </div>
 
                     {/* Star Rating */}
-                    <div className="flex mb-4 sm:mb-6 text-[var(--color-highlight)]">
+                    <div className="flex mb-6 text-[var(--color-highlight)]">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} size={16} fill={i < item.rating ? "currentColor" : "none"} className={i < item.rating ? "" : "text-gray-200"} />
                       ))}
                     </div>
 
                     {/* Review Content */}
-                    <p className="text-[var(--color-text-muted)] leading-relaxed font-light text-base sm:text-lg flex-grow">
-                      "{item.content}"
+                    <p className="text-[var(--color-text-muted)] leading-relaxed font-light text-lg flex-grow">
+                      &ldquo;{item.content}&rdquo;
                     </p>
                   </div>
                 </div>
@@ -285,21 +285,21 @@ export default function Testimonials({ initialTestimonials }: TestimonialProps) 
             <>
               <button
                 onClick={goToPrevious}
-                className="absolute left-0 sm:-left-4 md:-left-6 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white text-[var(--color-primary)] p-2 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
+                className="absolute -left-6 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white text-[var(--color-primary)] p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
                 aria-label="Témoignage précédent"
               >
-                <ChevronLeft size={20} className="sm:w-7 sm:h-7" />
+                <ChevronLeft size={28} />
               </button>
               <button
                 onClick={goToNext}
-                className="absolute right-0 sm:-right-4 md:-right-6 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white text-[var(--color-primary)] p-2 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
+                className="absolute -right-6 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white text-[var(--color-primary)] p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-10 hover:scale-110"
                 aria-label="Témoignage suivant"
               >
-                <ChevronRight size={20} className="sm:w-7 sm:h-7" />
+                <ChevronRight size={28} />
               </button>
 
               {/* Dots Indicator */}
-              <div className="flex justify-center gap-2 mt-6 sm:mt-8">
+              <div className="flex justify-center gap-2 mt-8">
                 {Array.from({ length: Math.ceil(testimonials.length / itemsPerView) }).map((_, index) => (
                   <button
                     key={index}
@@ -339,7 +339,7 @@ export default function Testimonials({ initialTestimonials }: TestimonialProps) 
             style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
           >
             <div 
-              className="bg-white rounded-[2.5rem] p-8 sm:p-10 max-w-2xl w-full max-h-[85vh] overflow-y-auto relative animate-scale-in shadow-2xl"
+              className="bg-white rounded-[2.5rem] p-10 max-w-2xl w-full max-h-[85vh] overflow-y-auto relative animate-scale-in shadow-2xl"
               onClick={(e) => e.stopPropagation()}
               style={{
                 position: 'relative',

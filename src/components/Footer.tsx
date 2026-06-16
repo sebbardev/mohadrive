@@ -5,7 +5,7 @@ import { Facebook, Instagram, Phone, Mail, MapPin, ArrowRight } from "lucide-rea
 
 export default function Footer() {
   return (
-    <footer className="relative bg-gradient-to-b from-[var(--color-primary)] via-[#054a66] to-[#043549] text-white pt-16 sm:pt-20 pb-8 overflow-hidden">
+    <footer className="relative bg-gradient-to-b from-[var(--color-primary)] via-[#054a66] to-[#043549] text-white pt-20 pb-8 overflow-hidden">
       {/* Animated gradient background */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" />
@@ -16,18 +16,18 @@ export default function Footer() {
       {/* Top gradient line */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-white/50 via-[var(--color-secondary)] to-[var(--color-highlight)]" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-8 relative z-10">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12 lg:mb-16">
+        <div className="grid grid-cols-4 gap-12 mb-16">
           
           {/* Company Info */}
           <div className="lg:col-span-1 space-y-6">
             {/* Logo */}
             <div className="flex flex-col">
-              <span className="font-black text-lg sm:text-2xl tracking-tighter uppercase text-white leading-none">
+              <span className="font-black text-2xl tracking-tighter uppercase text-white leading-none">
                 MOHADRIVE
               </span>
-              <span className="font-black text-[8px] sm:text-sm tracking-[0.3em] uppercase text-[var(--color-secondary)] leading-none mt-0.5 sm:mt-1">
+              <span className="font-black text-sm tracking-[0.3em] uppercase text-[var(--color-secondary)] leading-none mt-1">
                 location de voitures
               </span>
             </div>
@@ -148,7 +148,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-row justify-between items-center gap-4">
             <p className="text-xs font-medium text-white/70 text-center md:text-left">
               &copy; {new Date().getFullYear()} MohaDrive. Tous droits réservés.
             </p>

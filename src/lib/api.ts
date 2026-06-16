@@ -1,6 +1,6 @@
 import { cache } from 'react';
 
-const API_BASE_URL = "https://mohadrive.com/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://mohadrive.com/api";
 
 export interface Car {
   id: string;
@@ -97,7 +97,7 @@ export const getReviews = cache(async (): Promise<Review[]> => {
     }
 
     const data = await response.json();
-    const reviews = Array.isArray(data) ? data : [];
+    const reviews = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
     
     // Map API response to Review interface
     return reviews.map((review: any) => ({

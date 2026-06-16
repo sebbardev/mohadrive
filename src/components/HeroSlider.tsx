@@ -48,7 +48,7 @@ export default function HeroSlider({ images }: HeroSliderProps) {
   if (images.length === 0) return null;
 
   return (
-    <div className="relative h-[300px] sm:h-[400px] lg:h-[500px]">
+    <div className="relative h-[500px]">
       {/* Background glow */}
       <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-primary)]/20 via-[var(--color-secondary)]/10 to-transparent rounded-[2rem] rotate-3 blur-xl" />
 
@@ -77,14 +77,14 @@ export default function HeroSlider({ images }: HeroSliderProps) {
 
               {/* Text overlay */}
               {(image.title || image.subtitle) && (
-                <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
                   {image.title && (
-                    <h3 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight">
+                    <h3 className="text-3xl font-black text-white uppercase tracking-tight">
                       {image.title}
                     </h3>
                   )}
                   {image.subtitle && (
-                    <p className="text-lg sm:text-xl font-bold text-[var(--color-highlight)] mt-2">
+                    <p className="text-xl font-bold text-[var(--color-highlight)] mt-2">
                       {image.subtitle}
                     </p>
                   )}
