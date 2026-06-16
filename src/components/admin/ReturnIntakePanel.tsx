@@ -46,7 +46,7 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
     lavage: { enabled: false, type: "lavage", amount: "", note: "" },
     entretien: { enabled: false, type: "entretien", amount: "", note: "" },
     vidange: { enabled: false, type: "vidange", amount: "", note: "" },
-    rÃ©paration: { enabled: false, type: "rÃ©paration", amount: "", note: "" },
+    réparation: { enabled: false, type: "réparation", amount: "", note: "" },
     amendes: { enabled: false, type: "amendes", amount: "", note: "" },
     "autres frais": { enabled: false, type: "autres frais", amount: "", note: "" },
   });
@@ -59,7 +59,7 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
       lavage: { enabled: false, type: "lavage", amount: "", note: "" },
       entretien: { enabled: false, type: "entretien", amount: "", note: "" },
       vidange: { enabled: false, type: "vidange", amount: "", note: "" },
-      rÃ©paration: { enabled: false, type: "rÃ©paration", amount: "", note: "" },
+      réparation: { enabled: false, type: "réparation", amount: "", note: "" },
       amendes: { enabled: false, type: "amendes", amount: "", note: "" },
       "autres frais": { enabled: false, type: "autres frais", amount: "", note: "" },
     });
@@ -102,13 +102,13 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
   const submit = async () => {
     if (!active) return;
     if (!accessToken) {
-      toast.error("Vous devez Ãªtre connectÃ© en admin.");
+      toast.error("Vous devez être connecté en admin.");
       return;
     }
 
     for (const exp of selectedExpenses) {
       if (!exp.amount || exp.amount <= 0) {
-        toast.error("Veuillez renseigner un montant pour chaque charge sÃ©lectionnÃ©e.");
+        toast.error("Veuillez renseigner un montant pour chaque charge sélectionnée.");
         return;
       }
     }
@@ -137,11 +137,11 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
         return;
       }
 
-      toast.success("Retour enregistrÃ© + charges crÃ©Ã©es.");
+      toast.success("Retour enregistré + charges créées.");
       close();
       router.refresh();
     } catch {
-      toast.error("Erreur rÃ©seau.");
+      toast.error("Erreur réseau.");
     } finally {
       setSubmitting(false);
     }
@@ -159,7 +159,7 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
               <h3 className="admin-section-title text-lg md:text-xl tracking-tight text-[var(--color-primary)]">
                 Retours <span className="text-[var(--color-accent)]">Ã  traiter</span>
               </h3>
-              <p className="admin-label text-[9px] md:text-[10px]">Voitures revenues â€¢ Saisir dÃ©penses + kilomÃ©trage + Ã©tat</p>
+              <p className="admin-label text-[9px] md:text-[10px]">Voitures revenues • Saisir dépenses + kilométrage + état</p>
             </div>
           </div>
           <span className="admin-pill admin-pill-warning">{pendingReturns.length} retour(s)</span>
@@ -170,7 +170,7 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
             <div className="py-10 text-center bg-gray-50/50 rounded-[2rem] border border-gray-100">
               <p className="admin-label text-[10px]">Aucun retour Ã  traiter pour le moment.</p>
               <p className="text-[10px] font-bold text-gray-400 mt-2">
-                Le bloc sâ€™affiche quand une rÃ©servation est terminÃ©e (status COMPLETED ou date de fin passÃ©e) et que le retour nâ€™est pas encore validÃ©.
+                Le bloc s'affiche quand une réservation est terminée (status COMPLETED ou date de fin passée) et que le retour n'est pas encore validé.
               </p>
             </div>
           ) : (
@@ -265,7 +265,7 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
             <div className="flex items-start justify-between gap-4 mb-8">
               <div className="min-w-0 flex-1">
                 <h3 className="admin-section-title truncate">
-                  Retour vÃ©hicule â€¢ {active.car?.brand} {active.car?.model}
+                  Retour véhicule • {active.car?.brand} {active.car?.model}
                 </h3>
                 <p className="admin-label mt-1 truncate">
                   {active.first_name} {active.last_name}
@@ -290,7 +290,7 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
             <div className="p-8 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-1">
-                  <label className="admin-label block mb-2">KilomÃ©trage retour</label>
+                  <label className="admin-label block mb-2">Kilométrage retour</label>
                   <input
                     type="number"
                     min={0}
@@ -301,7 +301,7 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
                   />
                 </div>
                 <div className="md:col-span-1">
-                  <label className="admin-label block mb-2">Ã‰tat vÃ©hicule</label>
+                  <label className="admin-label block mb-2">État véhicule</label>
                   <select
                     value={returnCondition}
                     onChange={(e) => setReturnCondition(e.target.value)}
@@ -318,15 +318,15 @@ export default function ReturnIntakePanel({ pendingReturns }: { pendingReturns: 
                     value={returnNote}
                     onChange={(e) => setReturnNote(e.target.value)}
                     className="admin-input"
-                    placeholder="Ex: Rayure lÃ©gÃ¨reâ€¦"
+                    placeholder="Ex: Rayure légère…"
                   />
                 </div>
               </div>
 
               <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 shadow-inner">
                 <div className="flex items-center justify-between mb-5">
-                  <p className="admin-label !text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Quelles dÃ©penses avez-vous ?</p>
-                  <span className="text-[10px] font-black text-[var(--color-accent)] uppercase tracking-widest">{selectedExpenses.length} sÃ©lectionnÃ©e(s)</span>
+                  <p className="admin-label !text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Quelles dépenses avez-vous ?</p>
+                  <span className="text-[10px] font-black text-[var(--color-accent)] uppercase tracking-widest">{selectedExpenses.length} sélectionnée(s)</span>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

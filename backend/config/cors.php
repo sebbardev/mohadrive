@@ -22,6 +22,7 @@ return [
     'allowed_origins' => [
         'http://localhost:3000',
         'http://127.0.0.1:3000',
+        env('FRONTEND_URL', 'https://mohadrive.com'),
         'https://mohadrive.com',
         'https://www.mohadrive.com',
     ],
@@ -34,6 +35,6 @@ return [
 
     'max_age' => 3600,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];

@@ -16,6 +16,8 @@ export const authOptions: NextAuthOptions = {
 
         try {
           const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://www.mohadrive.com/api";
+          console.log("[Auth] Attempting login to:", `${API_URL}/login`);
+
           const response = await fetch(`${API_URL}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -26,8 +28,16 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || "Identifiants invalides");
+            let errorMessage = "Identifiants invalides";
+            try {
+              const errorData = await response.json();
+              // Laravel ValidationException returns message + errors object
+              errorMessage = errorData.message || errorData.errors?.email?.[0] || "Identifiants invalides";
+            } catch (parseError) {
+              // If response is not JSON, use status text
+              errorMessage = response.statusText || "Identifiants invalides";
+            }
+            throw new Error(errorMessage);
           }
 
           const { user, access_token } = await response.json();
@@ -41,6 +51,7 @@ export const authOptions: NextAuthOptions = {
             profileImage: user.profile_image || null,
           };
         } catch (error: any) {
+          console.error("[Auth] Login error:", error);
           throw new Error(error.message || "Erreur de connexion");
         }
       },

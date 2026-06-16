@@ -30,6 +30,19 @@ const nextConfig = {
         hostname: "localhost",
         port: "8000",
       },
+      // Hostinger backend domains
+      {
+        protocol: "https",
+        hostname: "*.mohadrive.com",
+      },
+      {
+        protocol: "https",
+        hostname: "mohadrive.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.mohadrive.com",
+      },
     ],
     // Enable WebP and AVIF formats for better compression
     formats: ['image/webp', 'image/avif'],
